@@ -16,6 +16,7 @@ class ShoppingList extends React.Component {
       <div className="list-group list-items">
         {items.map((item, index) =>
           <ShoppingListItem key={index}
+                            index={index}
                             value={item}
                             handleOnClick={this.props.handleRemoveItem} />
         )}

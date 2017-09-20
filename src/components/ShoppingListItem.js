@@ -10,7 +10,8 @@ class ShoppingListItem extends React.Component {
 
   handleOnClick(event) {
     event.preventDefault();
-    //this.props.handleRemoveItem(event);
+    const {index} = this.props; // to same jako const index = this.props.index;
+    this.props.handleOnClick(index);
   }
 
   render() {
@@ -24,7 +25,8 @@ class ShoppingListItem extends React.Component {
 
 ShoppingListItem.propTypes = {
   value: PropTypes.string,
-  handleRemoveItem: PropTypes.func
+  handleRemoveItem: PropTypes.func,
+  index: PropTypes.number
 };
 
 export default ShoppingListItem;
