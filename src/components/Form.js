@@ -1,13 +1,15 @@
 import React from 'react';
 
 import ShoppingList from './ShoppingList';
+import CopyForm from './CopyForm';
 
 class Form extends React.Component {
   constructor() {
     super();
     this.state = {
       formValue: '',
-      items: []
+      items: [],
+      isFormSubmitted: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -16,6 +18,7 @@ class Form extends React.Component {
     this.handleRemoveItem = this.handleRemoveItem.bind(this);
     this.handleStartOver = this.handleStartOver.bind(this);
     this.setFocusOnMainInput = this.setFocusOnMainInput.bind(this);
+    this.resetForm = this.resetForm.bind(this);
   }
 
   handleSubmit(event) {
@@ -29,7 +32,9 @@ class Form extends React.Component {
   }
 
   handleSaveList(event) {
-    
+    this.setState({
+      isFormSubmitted: true
+    });
   }
 
   handleChange(event) {
@@ -45,7 +50,7 @@ class Form extends React.Component {
         ...prevState.items.slice(index + 1) // a nasledne prida vsechno dal od index+1
       ]
     }), () => {
-      if (this.state.items.length == 0) { // pokud odeberu vsechny polozky => nastav focus na hlavni input
+      if (this.state.items.length === 0) { // pokud odeberu vsechny polozky => nastav focus na hlavni input
         this.setFocusOnMainInput();
       }
     });
@@ -55,10 +60,7 @@ class Form extends React.Component {
     event.preventDefault();
     var reset = window.confirm('Opravdu chceš smazat aktuální seznam a začít znova?');
     if (reset) {
-      this.setState(prevState => ({
-        formValue: '',
-        items: []
-      }));
+      this.resetForm();
       this.setFocusOnMainInput();
     }
   }
@@ -67,25 +69,47 @@ class Form extends React.Component {
     this.mainInput.focus();
   }
 
+  resetForm() {
+    this.setState(prevState => ({
+      formValue: '',
+      items: [],
+      isFormSubmitted: false
+    }));
+  }
+
   render() {
-    return (
-      <form action="/" method="get" onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="item" className="sr-only">Zadejte, co chcete nakoupit</label>
-          <input type="text" name="item" id="item" value={this.state.formValue} className="form-control input-lg" placeholder="Co chceš nakoupit?" tabIndex="1" autoFocus onChange={this.handleChange} ref={(input) => { this.mainInput = input; }} />
-        </div>
+    const isFormSubmitted = this.state.isFormSubmitted;
 
-        <ShoppingList items={this.state.items}
-                      handleRemoveItem={this.handleRemoveItem} />
-
-        {this.state.items.length > 0 &&
-          <div className="action-zone form-group">
-            <button type="submit" className="btn btn-primary btn-block-xxs" tabIndex="2" onClick={this.handleSaveList}>Hotovo</button>
-            <a href="" className="btn btn-link btn-block-xxs" tabIndex="3" onClick={this.handleStartOver}>Začít znova</a>
+    if (!isFormSubmitted) { // formular pro vytvoreni seznamu
+      return (
+        <form action="/" method="get" onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="item" className="sr-only">Zadejte, co chcete nakoupit</label>
+            <input type="text" name="item" id="item" value={this.state.formValue} className="form-control input-lg" placeholder="Co chceš nakoupit?" tabIndex="1" autoFocus onChange={this.handleChange} ref={(input) => { this.mainInput = input; }} />
           </div>
-        }
-      </form>
-    );
+
+          <ShoppingList items={this.state.items}
+                        handleRemoveItem={this.handleRemoveItem}
+                        listReadOnly={this.state.isFormSubmitted} />
+
+          {this.state.items.length > 0 &&
+            <div className="action-zone form-group">
+              <button type="button" className="btn btn-primary btn-lg btn-block-xxs" tabIndex="2" onClick={this.handleSaveList}>Hotovo</button>
+              <a href="" className="btn btn-link btn-block-xxs" tabIndex="3" onClick={this.handleStartOver}>Začít znova</a>
+            </div>
+          }
+        </form>
+      );
+    } else { // hotovy seznam + pro formular pro zkopirovani URL seznamu
+      return (
+        <div>
+          <ShoppingList items={this.state.items}
+                        handleRemoveItem={this.handleRemoveItem}
+                        listReadOnly={isFormSubmitted} />
+          <CopyForm handleCreateNewList={this.resetForm} />
+        </div>
+      );
+    }
   }
 }
 

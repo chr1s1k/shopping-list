@@ -15,18 +15,25 @@ class ShoppingListItem extends React.Component {
   }
 
   render() {
-    const itemValue = this.props.value;
+    const {value, readOnly} = this.props;
 
-    return (
-      <a href="" className="list-group-item" title="Odstranit položku" onClick={this.handleOnClick}>{itemValue} <i className="glyphicon glyphicon-remove text-primary icon-remove" aria-hidden="true"></i></a>
-    );
+    if (!readOnly) {
+      return (
+        <a href="" className="list-group-item" title="Odstranit položku" onClick={this.handleOnClick}>{value} <i className="glyphicon glyphicon-remove icon-remove" aria-hidden="true"></i></a>
+     );
+    } else {
+      return (
+        <div className="list-group-item">{value}</div>
+      );
+    }
   }
 }
 
 ShoppingListItem.propTypes = {
   value: PropTypes.string,
-  handleRemoveItem: PropTypes.func,
-  index: PropTypes.number
+  handleOnClick: PropTypes.func,
+  index: PropTypes.number,
+  readOnly: PropTypes.bool
 };
 
 export default ShoppingListItem;

@@ -18,7 +18,8 @@ class ShoppingList extends React.Component {
           <ShoppingListItem key={index}
                             index={index}
                             value={item}
-                            handleOnClick={this.props.handleRemoveItem} />
+                            handleOnClick={this.props.handleRemoveItem}
+                            readOnly={this.props.listReadOnly} />
         )}
       </div>
     );
@@ -29,7 +30,8 @@ class ShoppingList extends React.Component {
 // prop.handleRemoveItem se ocekava jako funkce
 ShoppingList.propTypes = {
   items: PropTypes.array,
-  handleRemoveItem: PropTypes.func
+  handleRemoveItem: PropTypes.func,
+  listReadOnly: PropTypes.bool
 };
 
 export default ShoppingList;
