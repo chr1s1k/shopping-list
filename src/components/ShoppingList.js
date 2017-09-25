@@ -8,7 +8,7 @@ class ShoppingList extends React.Component {
   render() {
     const items = this.props.items;
 
-    if (!items.length > 0) {
+    if (items === undefined || !items.length > 0) {
       return null; // v pripade prazdneho pole se tato komponenta ShoppingList vubec nevykresli
     }
 
@@ -19,7 +19,8 @@ class ShoppingList extends React.Component {
                             index={index}
                             value={item}
                             handleOnClick={this.props.handleRemoveItem}
-                            readOnly={this.props.listReadOnly} />
+                            readOnly={this.props.listReadOnly}
+                            editable={this.props.listEditable} />
         )}
       </div>
     );
@@ -31,7 +32,8 @@ class ShoppingList extends React.Component {
 ShoppingList.propTypes = {
   items: PropTypes.array,
   handleRemoveItem: PropTypes.func,
-  listReadOnly: PropTypes.bool
+  listReadOnly: PropTypes.bool,
+  listEditable: PropTypes.bool
 };
 
 export default ShoppingList;

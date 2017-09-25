@@ -1,7 +1,9 @@
 import React from 'react';
+import axios from 'axios';
 
 import ShoppingList from './ShoppingList';
 import CopyForm from './CopyForm';
+import ErrorForm from './ErrorForm';
 
 class Form extends React.Component {
   constructor() {
@@ -9,7 +11,9 @@ class Form extends React.Component {
     this.state = {
       formValue: '',
       items: [],
-      isFormSubmitted: false
+      isFormSubmitted: false,
+      listSaved: false,
+      listUrl: '/nakup'
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,8 +36,32 @@ class Form extends React.Component {
   }
 
   handleSaveList(event) {
-    this.setState({
-      isFormSubmitted: true
+    const items = this.state.items.join('|'),
+      that = this;
+
+    const querystring = require('querystring');
+
+    // axios normalne posila data jako JSON, stringify udela transformace, aby to nasledne slo precist pres $_POST
+    axios.post('http://localhost/shopping-list/public/api/shopping-list/create/', querystring.stringify({ items: items }))
+    .then(function (response) {
+      const newListUrl = response.data.referer + that.state.listUrl + '/' + response.data.id;
+
+      if (response.data.result === "success") {
+        that.setState(prevState => ({
+          isFormSubmitted: true,
+          listSaved: true,
+          listUrl: newListUrl
+        }));
+      } else {
+        that.setState({
+          isFormSubmitted: true
+        });
+      }
+    })
+    .catch(function (error) {
+      that.setState({
+        isFormSubmitted: true
+      });
     });
   }
 
@@ -73,7 +101,9 @@ class Form extends React.Component {
     this.setState(prevState => ({
       formValue: '',
       items: [],
-      isFormSubmitted: false
+      isFormSubmitted: false,
+      listSaved: false,
+      listUrl: '/nakup'
     }));
   }
 
@@ -95,18 +125,25 @@ class Form extends React.Component {
           {this.state.items.length > 0 &&
             <div className="action-zone form-group">
               <button type="button" className="btn btn-primary btn-lg btn-block-xxs" tabIndex="2" onClick={this.handleSaveList}>Hotovo</button>
-              <a href="" className="btn btn-link btn-block-xxs" tabIndex="3" onClick={this.handleStartOver}>Začít znova</a>
+              <a href="" className="btn btn-link btn-block-xxs" tabIndex="3" role="button" onClick={this.handleStartOver}>Začít znova</a>
             </div>
           }
         </form>
       );
-    } else { // hotovy seznam + pro formular pro zkopirovani URL seznamu
+    } else { // hotovy seznam + pro formular pro zkopirovani URL seznamu nebo pro opetovne ulozeni
       return (
         <div>
           <ShoppingList items={this.state.items}
                         handleRemoveItem={this.handleRemoveItem}
                         listReadOnly={isFormSubmitted} />
-          <CopyForm handleCreateNewList={this.resetForm} />
+          {this.state.listSaved &&
+            <CopyForm handleCreateNewList={this.resetForm}
+                      listUrl={this.state.listUrl} />
+          }
+          {!this.state.listSaved &&
+            <ErrorForm handleSaveList={this.handleSaveList}
+                       handleStartOver={this.handleStartOver} />
+          }
         </div>
       );
     }
