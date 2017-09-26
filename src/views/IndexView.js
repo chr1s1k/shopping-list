@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Form from '../components/Form';
+import Form from '../components/Forms/Form';
 
 class IndexView extends React.Component {
   render() {

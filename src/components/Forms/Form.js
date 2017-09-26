@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import ShoppingList from './ShoppingList';
+import ShoppingList from '../ShoppingList/ShoppingList';
 import CopyForm from './CopyForm';
 import ErrorForm from './ErrorForm';
 
@@ -89,7 +89,6 @@ class Form extends React.Component {
     var reset = window.confirm('Opravdu chceš smazat aktuální seznam a začít znova?');
     if (reset) {
       this.resetForm();
-      this.setFocusOnMainInput();
     }
   }
 
@@ -104,7 +103,9 @@ class Form extends React.Component {
       isFormSubmitted: false,
       listSaved: false,
       listUrl: '/nakup'
-    }));
+    }), () => {
+      this.setFocusOnMainInput();
+    });
   }
 
   render() {

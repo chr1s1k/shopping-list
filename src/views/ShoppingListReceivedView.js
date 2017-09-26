@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
-import ShoppingList from '../components/ShoppingList';
-import DoneForm from '../components/DoneForm';
+import ShoppingList from '../components/ShoppingList/ShoppingList';
+import DoneForm from '../components/Forms/DoneForm';
 
 class ShoppingListReceivedView extends React.Component {
   constructor() {
