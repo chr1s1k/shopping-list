@@ -7,8 +7,12 @@ import ShoppingListReducer from './reducers/ShoppingListReducer';
 
 import App from './components/App/App';
 
-const state = {};
-const store = createStore(ShoppingListReducer, state);
+const state = {
+  items: []
+};
+
+// vytvori store s uvodnim stavem a moznosti prohlizet store pomoci devtools
+const store = createStore(ShoppingListReducer, state, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 // Provider zpristupni store App komponente
 ReactDOM.render((

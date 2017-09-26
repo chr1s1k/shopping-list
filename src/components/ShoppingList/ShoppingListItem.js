@@ -38,7 +38,7 @@ class ShoppingListItem extends React.Component {
       return (
         <a href="" className={"list-group-item item-" + (isActive ? 'active' : 'inactive')} onClick={this.changeItemState}>
           <span>{value}</span>
-          <i className="glyphicon glyphicon-ok-circle icon-done" aria-hidden="true"></i>
+          <i className="glyphicon glyphicon-ok icon-done" aria-hidden="true"></i>
         </a>
       );
     } else {

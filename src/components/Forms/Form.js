@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 import ShoppingList from '../ShoppingList/ShoppingList';
 import CopyForm from './CopyForm';
@@ -8,9 +9,9 @@ import ErrorForm from './ErrorForm';
 class Form extends React.Component {
   constructor() {
     super();
+
     this.state = {
       formValue: '',
-      items: [],
       isFormSubmitted: false,
       listSaved: false,
       listUrl: '/nakup'
@@ -28,8 +29,12 @@ class Form extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     if (this.state.formValue !== '') {
+      const item = this.state.formValue;
+
+      // pridej polozku do store
+      this.props.addItem(item);
+
       this.setState(prevState => ({
-        items: [...prevState.items, this.state.formValue], // na konec pole prevState.items prida this.state.formValue
         formValue: '' // vyresetuj uzivatelskej vstup
       }));
     }
@@ -99,7 +104,6 @@ class Form extends React.Component {
   resetForm() {
     this.setState(prevState => ({
       formValue: '',
-      items: [],
       isFormSubmitted: false,
       listSaved: false,
       listUrl: '/nakup'
@@ -110,6 +114,7 @@ class Form extends React.Component {
 
   render() {
     const isFormSubmitted = this.state.isFormSubmitted;
+    const { items } = this.props;
 
     if (!isFormSubmitted) { // formular pro vytvoreni seznamu
       return (
@@ -119,11 +124,11 @@ class Form extends React.Component {
             <input type="text" name="item" id="item" value={this.state.formValue} className="form-control input-lg" placeholder="Co chceš nakoupit?" tabIndex="1" autoFocus onChange={this.handleChange} ref={(input) => { this.mainInput = input; }} />
           </div>
 
-          <ShoppingList items={this.state.items}
+          <ShoppingList items={items}
                         handleRemoveItem={this.handleRemoveItem}
-                        listReadOnly={this.state.isFormSubmitted} />
+                        listReadOnly={isFormSubmitted} />
 
-          {this.state.items.length > 0 &&
+          {items.length > 0 &&
             <div className="action-zone form-group">
               <button type="button" className="btn btn-primary btn-lg btn-block-xxs" tabIndex="2" onClick={this.handleSaveList}>Hotovo</button>
               <a href="" className="btn btn-link btn-block-xxs" tabIndex="3" role="button" onClick={this.handleStartOver}>Začít znova</a>
@@ -134,7 +139,7 @@ class Form extends React.Component {
     } else { // hotovy seznam + pro formular pro zkopirovani URL seznamu nebo pro opetovne ulozeni
       return (
         <div>
-          <ShoppingList items={this.state.items}
+          <ShoppingList items={items}
                         handleRemoveItem={this.handleRemoveItem}
                         listReadOnly={isFormSubmitted} />
           {this.state.listSaved &&
@@ -149,6 +154,10 @@ class Form extends React.Component {
       );
     }
   }
+}
+
+ShoppingList.PropTypes = {
+  items: PropTypes.array
 }
 
 export default Form;
