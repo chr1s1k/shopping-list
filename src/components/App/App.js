@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import IndexView from '../../views/IndexView';
 import ShoppingListReceivedView from '../../views/ShoppingListReceivedView';
 import PageNotFoundView from '../../views/PageNotFoundView';
+import ShoppingListCompletedView from '../../views/ShoppingListCompletedView';
 
 class App extends React.Component {
 
@@ -14,6 +15,7 @@ class App extends React.Component {
           <Route exact path='/' component={IndexView} />
           <Route exact path='/nakup/:id' component={ShoppingListReceivedView} />
           <Route path='/nakup' component={ShoppingListReceivedView} />
+          <Route path='/diky' component={ShoppingListCompletedView} />
           <Route component={PageNotFoundView} />
         </Switch>
       </div>

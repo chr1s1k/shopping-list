@@ -5,7 +5,7 @@ class DoneForm extends React.Component {
   render() {
     return (
       <div className="action-zone form-group">
-        <Link to="/" className="btn btn-primary btn-lg btn-block-xxs">Mám nakoupeno</Link>
+        <Link to="/diky" className="btn btn-primary btn-lg btn-block-xxs">Mám nakoupeno</Link>
       </div>
     );
   }

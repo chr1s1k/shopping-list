@@ -1,21 +1,28 @@
 import React from 'react';
 import axios from 'axios';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import ShoppingList from '../ShoppingList/ShoppingList';
 import CopyForm from './CopyForm';
 import ErrorForm from './ErrorForm';
+import Loader from '../Loader/Loader';
+
+import * as shoppingListActions from '../../actions/ShoppingListActions';
+
+const initialState = {
+  formValue: '',
+  isFormSubmitted: false,
+  listSaved: false,
+  listUrl: '/nakup',
+  isLoading: false
+};
 
 class Form extends React.Component {
   constructor() {
     super();
 
-    this.state = {
-      formValue: '',
-      isFormSubmitted: false,
-      listSaved: false,
-      listUrl: '/nakup'
-    };
+    this.state = initialState;
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSaveList = this.handleSaveList.bind(this);
@@ -41,8 +48,12 @@ class Form extends React.Component {
   }
 
   handleSaveList(event) {
-    const items = this.state.items.join('|'),
+    const items = this.props.items.join('|'),
       that = this;
+
+    this.setState(prevState => ({
+      isLoading: !prevState.isLoading
+    }));
 
     const querystring = require('querystring');
 
@@ -51,22 +62,23 @@ class Form extends React.Component {
     .then(function (response) {
       const newListUrl = response.data.referer + that.state.listUrl + '/' + response.data.id;
 
+      // uspesne ulozeni seznamu
       if (response.data.result === "success") {
         that.setState(prevState => ({
-          isFormSubmitted: true,
           listSaved: true,
           listUrl: newListUrl
         }));
-      } else {
-        that.setState({
-          isFormSubmitted: true
-        });
       }
+      this.setState(prevState => ({
+        isLoading: !prevState.isLoading,
+        isFormSubmitted: !prevState.isFormSubmitted
+      }));
     })
-    .catch(function (error) {
-      that.setState({
-        isFormSubmitted: true
-      });
+    .catch(function (error) { // neuspesne ulozeni seznamu
+      that.setState(prevState => ({
+        isLoading: !prevState.isLoading,
+        isFormSubmitted: !prevState.isFormSubmitted
+      }));
     });
   }
 
@@ -77,16 +89,10 @@ class Form extends React.Component {
   }
 
   handleRemoveItem(index) {
-    this.setState(prevState => ({ // this.setState je asynchronni volani
-      items: [
-        ...prevState.items.slice(0, index), // na konec pole prevState.items prida polozky 0 az index
-        ...prevState.items.slice(index + 1) // a nasledne prida vsechno dal od index+1
-      ]
-    }), () => {
-      if (this.state.items.length === 0) { // pokud odeberu vsechny polozky => nastav focus na hlavni input
-        this.setFocusOnMainInput();
-      }
-    });
+    this.props.removeItem(index);
+//    if (this.state.items.length === 0) { // pokud odeberu vsechny polozky => nastav focus na hlavni input
+//      this.setFocusOnMainInput();
+//    }
   }
 
   handleStartOver(event) {
@@ -102,23 +108,22 @@ class Form extends React.Component {
   }
 
   resetForm() {
-    this.setState(prevState => ({
-      formValue: '',
-      isFormSubmitted: false,
-      listSaved: false,
-      listUrl: '/nakup'
-    }), () => {
+    this.props.removeAllItems();
+    this.setState(prevState => (initialState), () => {
       this.setFocusOnMainInput();
     });
   }
 
   render() {
-    const isFormSubmitted = this.state.isFormSubmitted;
+    const { isFormSubmitted, listSaved, isLoading } = this.state;
     const { items } = this.props;
 
     if (!isFormSubmitted) { // formular pro vytvoreni seznamu
       return (
-        <form action="/" method="get" onSubmit={this.handleSubmit}>
+        <form action="/" method="get" onSubmit={this.handleSubmit} className={isLoading ? 'loading' : ''}>
+
+          <Loader showLoader={isLoading} />
+
           <div className="form-group">
             <label htmlFor="item" className="sr-only">Zadejte, co chcete nakoupit</label>
             <input type="text" name="item" id="item" value={this.state.formValue} className="form-control input-lg" placeholder="Co chceš nakoupit?" tabIndex="1" autoFocus onChange={this.handleChange} ref={(input) => { this.mainInput = input; }} />
@@ -142,11 +147,13 @@ class Form extends React.Component {
           <ShoppingList items={items}
                         handleRemoveItem={this.handleRemoveItem}
                         listReadOnly={isFormSubmitted} />
-          {this.state.listSaved &&
+
+          {listSaved &&
             <CopyForm handleCreateNewList={this.resetForm}
                       listUrl={this.state.listUrl} />
           }
-          {!this.state.listSaved &&
+
+          {!listSaved &&
             <ErrorForm handleSaveList={this.handleSaveList}
                        handleStartOver={this.handleStartOver} />
           }
@@ -156,8 +163,18 @@ class Form extends React.Component {
   }
 }
 
-ShoppingList.PropTypes = {
-  items: PropTypes.array
+// mapovani hlavniho stavu na props
+function mapStateToProps(state) {
+  return {
+    items: state.items
+  };
 }
 
-export default Form;
+// mapovani
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(shoppingListActions, dispatch);
+}
+
+const form = connect(mapStateToProps, mapDispatchToProps);
+
+export default form(Form);
