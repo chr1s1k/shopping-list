@@ -7,3 +7,9 @@ RewriteRule ^api/shopping-list/get/(.*[^/])$ /api/shopping-list/get.php?id=$1 [L
 
 ## CREATE
 RewriteRule ^api/shopping-list/create/$ /api/shopping-list/create.php [L]
+
+## pokud request zacina "api", tak neaplikuj pravidla nize
+RewriteRule ^(api)($|/) - [L]
+
+## vsechny ostatni requesty vyjma souboru s koncovkama nize smeruj na index.html
+RewriteRule !\.(pdf|js|ico|gif|jpg|png|css|rar|zip|eot|svg|ttf|woff|woff2|map|tar\.gz)$ index.html [L]

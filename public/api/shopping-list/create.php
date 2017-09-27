@@ -31,7 +31,12 @@ if (isset($_POST['items'])) {
   $createdListId = $list->create();
 
   // get procotol + hostname
-  $referer = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['SERVER_NAME'];
+  if (isset($_SERVER['REQUEST_SCHEME'])) {
+    $protocol = $_SERVER['REQUEST_SCHEME'];
+  } else {
+    $protocol = "http";
+  }
+  $referer = $protocol . "://" . $_SERVER['SERVER_NAME'];
 
   if (is_numeric($createdListId)) {
     $result_arr = array(

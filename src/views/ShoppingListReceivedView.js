@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import ShoppingList from '../components/ShoppingList/ShoppingList';
 import DoneForm from '../components/Forms/DoneForm';
+import { api } from '../config/api';
 
 import * as shoppingListActions from '../actions/ShoppingListActions';
 
@@ -23,7 +24,7 @@ class ShoppingListReceivedView extends React.Component {
         that = this;
 
       // perform request to get shopping list by ID
-      axios.get('http://localhost/shopping-list/public/api/shopping-list/get.php?id=' + id)
+      axios.get(api.getUrl + id)
         .then(function (response) {
           that.props.setItems(response.data.items);
           that.setState({

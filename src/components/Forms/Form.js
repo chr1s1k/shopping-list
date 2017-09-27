@@ -7,6 +7,7 @@ import ShoppingList from '../ShoppingList/ShoppingList';
 import CopyForm from './CopyForm';
 import ErrorForm from './ErrorForm';
 import Loader from '../Loader/Loader';
+import { api } from '../../config/api';
 
 import * as shoppingListActions from '../../actions/ShoppingListActions';
 
@@ -52,13 +53,13 @@ class Form extends React.Component {
       that = this;
 
     this.setState(prevState => ({
-      isLoading: !prevState.isLoading
+      isLoading: true
     }));
 
     const querystring = require('querystring');
 
     // axios normalne posila data jako JSON, stringify udela transformace, aby to nasledne slo precist pres $_POST
-    axios.post('http://localhost/shopping-list/public/api/shopping-list/create/', querystring.stringify({ items: items }))
+    axios.post(api.createUrl, querystring.stringify({ items: items }))
     .then(function (response) {
       const newListUrl = response.data.referer + that.state.listUrl + '/' + response.data.id;
 
@@ -77,7 +78,7 @@ class Form extends React.Component {
     .catch(function (error) { // neuspesne ulozeni seznamu
       that.setState(prevState => ({
         isLoading: !prevState.isLoading,
-        isFormSubmitted: !prevState.isFormSubmitted
+        isFormSubmitted: true
       }));
     });
   }
@@ -143,7 +144,10 @@ class Form extends React.Component {
       );
     } else { // hotovy seznam + pro formular pro zkopirovani URL seznamu nebo pro opetovne ulozeni
       return (
-        <div>
+        <div className={isLoading ? 'loading' : ''}>
+
+          <Loader showLoader={isLoading} />
+
           <ShoppingList items={items}
                         handleRemoveItem={this.handleRemoveItem}
                         listReadOnly={isFormSubmitted} />

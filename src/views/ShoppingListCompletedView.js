@@ -10,7 +10,7 @@ class ShoppingListCompletedView extends React.Component {
           <p>Jestli nevíš co dál, můžeš si napsat vlastní nákup ;)</p>
         </div>
         <div className="action-zone form-group">
-          <Link to="/" className="btn btn-primary btn-block-xxs">Napsat vlastní nákup</Link>
+          <Link to="/" className="btn btn-primary btn-lg btn-block-xxs">Napsat vlastní nákup</Link>
         </div>
       </div>
     );
