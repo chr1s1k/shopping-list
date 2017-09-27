@@ -1,16 +1,19 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import ShoppingList from '../components/ShoppingList/ShoppingList';
 import DoneForm from '../components/Forms/DoneForm';
+
+import * as shoppingListActions from '../actions/ShoppingListActions';
 
 class ShoppingListReceivedView extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      itemsFetched: false,
-      items: []
+      itemsFetched: false
     };
   }
 
@@ -22,8 +25,8 @@ class ShoppingListReceivedView extends React.Component {
       // perform request to get shopping list by ID
       axios.get('http://localhost/shopping-list/public/api/shopping-list/get.php?id=' + id)
         .then(function (response) {
+          that.props.setItems(response.data.items);
           that.setState({
-            items: response.data.items,
             itemsFetched: true,
           });
         })
@@ -40,7 +43,8 @@ class ShoppingListReceivedView extends React.Component {
   }
 
   render() {
-    const {items, itemsFetched} = this.state;
+    const { itemsFetched } = this.state;
+    const { items } = this.props;
 
     if (itemsFetched) {
       if (!items.length > 0) {
@@ -55,7 +59,7 @@ class ShoppingListReceivedView extends React.Component {
         <div>
           <ShoppingList items={items}
                         listEditable={true} />
-          <DoneForm />
+          <DoneForm removeAllItems={this.props.removeAllItems} />
         </div>
       );
     } else {
@@ -66,4 +70,16 @@ class ShoppingListReceivedView extends React.Component {
   }
 }
 
-export default ShoppingListReceivedView;
+function mapStateToProps(state) {
+  return {
+    items: state.items
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(shoppingListActions, dispatch);
+}
+
+const shoppingListReceivedView = connect(mapStateToProps, mapDispatchToProps);
+
+export default shoppingListReceivedView(ShoppingListReceivedView);

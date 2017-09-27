@@ -1,4 +1,4 @@
-import { ADD_ITEM, REMOVE_ITEM, REMOVE_ALL_ITEMS } from '../actions/ShoppingListActions';
+import { ADD_ITEM, REMOVE_ITEM, REMOVE_ALL_ITEMS, SET_ITEMS } from '../actions/ShoppingListActions';
 
 const ShoppingListReducer = (state = {}, action) => {
   switch (action.type) {
@@ -18,6 +18,11 @@ const ShoppingListReducer = (state = {}, action) => {
     case REMOVE_ALL_ITEMS:
       return {
         items: []
+      };
+
+    case SET_ITEMS:
+      return {
+        items: action.items
       };
 
     default:
