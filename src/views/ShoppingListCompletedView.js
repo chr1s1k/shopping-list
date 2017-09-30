@@ -1,7 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as shoppingListActions from '../actions/ShoppingListActions';
 
 class ShoppingListCompletedView extends React.Component {
+
+  componentDidMount() {
+    this.props.removeAllItems();
+  }
+
   render() {
     return (
       <div>
@@ -17,4 +26,16 @@ class ShoppingListCompletedView extends React.Component {
   }
 }
 
-export default ShoppingListCompletedView;
+function mapStateToProps(state) {
+  return {
+    items: state.items
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(shoppingListActions, dispatch);
+}
+
+const shoppingListCompletedView = connect(mapStateToProps, mapDispatchToProps);
+
+export default shoppingListCompletedView(ShoppingListCompletedView);

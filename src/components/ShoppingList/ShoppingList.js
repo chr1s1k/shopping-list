@@ -17,10 +17,11 @@ class ShoppingList extends React.Component {
         {items.map((item, index) =>
           <ShoppingListItem key={index}
                             index={index}
-                            value={item}
+                            item={item}
                             handleOnClick={this.props.handleRemoveItem}
                             readOnly={this.props.listReadOnly}
-                            editable={this.props.listEditable} />
+                            editable={this.props.listEditable}
+                            toggleActive={this.props.toggleActive} />
         )}
       </div>
     );

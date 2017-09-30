@@ -37,7 +37,10 @@ class Form extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     if (this.state.formValue !== '') {
-      const item = this.state.formValue;
+      const item = {
+        value: this.state.formValue,
+        active: false
+      };
 
       // pridej polozku do store
       this.props.addItem(item);
@@ -49,8 +52,14 @@ class Form extends React.Component {
   }
 
   handleSaveList(event) {
-    const items = this.props.items.join('|'),
-      that = this;
+    const that = this;
+    let items = [];
+
+    this.props.items.map((item, index) => {
+      return items.push(item.value);
+    });
+
+    items = items.join('|');
 
     this.setState(prevState => ({
       isLoading: true

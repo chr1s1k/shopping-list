@@ -26,7 +26,16 @@ class ShoppingListReceivedView extends React.Component {
       // perform request to get shopping list by ID
       axios.get(api.getUrl + id)
         .then(function (response) {
-          that.props.setItems(response.data.items);
+          let items = [];
+
+          response.data.items.map((item, index) => {
+            return items.push({
+              value: item,
+              active: true
+            });
+          });
+
+          that.props.setItems(items);
           that.setState({
             itemsFetched: true,
           });
@@ -59,8 +68,10 @@ class ShoppingListReceivedView extends React.Component {
       return (
         <div>
           <ShoppingList items={items}
-                        listEditable={true} />
-          <DoneForm removeAllItems={this.props.removeAllItems} />
+                        listEditable={true}
+                        toggleActive={this.props.toggleActive} />
+          <DoneForm removeAllItems={this.props.removeAllItems}
+                    items={items} />
         </div>
       );
     } else {
