@@ -26,6 +26,7 @@ if (isset($_POST['items'])) {
 
   $list->setItems($_POST['items']);
   $list->setCreated(date("Y-m-d"));
+  $list->setSLID(uniqid());
 
   // create list and retrieve ID of created record
   $createdListId = $list->create();
@@ -41,7 +42,7 @@ if (isset($_POST['items'])) {
   if (is_numeric($createdListId)) {
     $result_arr = array(
       'result' => 'success',
-      'id' => $createdListId,
+      'slid' => $list->getSLID(),
       'referer' => $referer
     );
   } else {

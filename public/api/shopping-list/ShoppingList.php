@@ -14,6 +14,7 @@ class ShoppingList {
 
   // object properties
   private $id;
+  private $slid;
   private $items;
   private $created;
 
@@ -25,6 +26,10 @@ class ShoppingList {
     $this->id = $id;
   }
 
+  public function setSLID($slid) {
+    $this->slid = $slid;
+  }
+
   public function setItems($items) {
     $this->items = $items;
   }
@@ -33,14 +38,18 @@ class ShoppingList {
     $this->created = $created;
   }
 
-  public function get($id) {
-    $query = "SELECT * FROM " . $this->tableName . " WHERE id = :id";
+  public function getSLID() {
+    return $this->slid;
+  }
+
+  public function get($slid) {
+    $query = "SELECT * FROM " . $this->tableName . " WHERE slid = :slid LIMIT 1";
 
     // prepare query statement
     $stmt = $this->connection->prepare($query);
 
     // bind values
-    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':slid', $slid);
 
     // execute query
     $stmt->execute();
@@ -49,7 +58,7 @@ class ShoppingList {
   }
 
   public function create() {
-    $query = "INSERT INTO " . $this->tableName . " (id, items, created) VALUES (NULL, :items, :created)";
+    $query = "INSERT INTO " . $this->tableName . " (id, slid, items, created) VALUES (NULL, :slid, :items, :created)";
 
     // prepare query statement
     $stmt = $this->connection->prepare($query);
@@ -58,6 +67,7 @@ class ShoppingList {
     $this->created = htmlspecialchars(strip_tags($this->created));
 
     // bind values
+    $stmt->bindParam(':slid', $this->slid);
     $stmt->bindParam(':items', $this->items);
     $stmt->bindParam(':created', $this->created);
 

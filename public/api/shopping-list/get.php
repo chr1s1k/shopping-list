@@ -13,8 +13,8 @@ $items_arr = array();
 $items_arr["items"] = array();
 
 // check for parameter
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-  $id = $_GET['id'];
+if (isset($_GET['slid'])) {
+  $slid = $_GET['slid'];
 
   // get database connection
   $database = new Database();
@@ -24,7 +24,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
   $shoppingList = new ShoppingList($db);
 
   // get list
-  $stmt = $shoppingList->get($id);
+  $stmt = $shoppingList->get($slid);
   $num = $stmt->rowCount();
 
   // check if record was found

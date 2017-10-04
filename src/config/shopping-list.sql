@@ -30,6 +30,7 @@ USE `shopping_list`;
 
 CREATE TABLE `shoppinglists` (
   `id` int(11) NOT NULL,
+  `slid` varchar(256) COLLATE utf8_czech_ci NOT NULL,
   `items` text COLLATE utf8_czech_ci NOT NULL,
   `created` date NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;

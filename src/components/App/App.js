@@ -13,7 +13,7 @@ class App extends React.Component {
       <div>
         <Switch>
           <Route exact path='/' component={IndexView} />
-          <Route exact path='/nakup/:id' component={ShoppingListReceivedView} />
+          <Route exact path='/nakup/:slid' component={ShoppingListReceivedView} />
           <Route path='/nakup' component={ShoppingListReceivedView} />
           <Route path='/diky' component={ShoppingListCompletedView} />
           <Route component={PageNotFoundView} />

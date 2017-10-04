@@ -3,7 +3,7 @@ RewriteBase /
 
 ## GET
 RewriteRule ^api/shopping-list/get/$ /api/shopping-list/get.php [L]
-RewriteRule ^api/shopping-list/get/(.*[^/])$ /api/shopping-list/get.php?id=$1 [L]
+RewriteRule ^api/shopping-list/get/(.*[^/])$ /api/shopping-list/get.php?slid=$1 [L]
 
 ## CREATE
 RewriteRule ^api/shopping-list/create/$ /api/shopping-list/create.php [L]

@@ -9,6 +9,6 @@ const isLocalhost = Boolean(
 );
 
 export const api = {
-  getUrl: isLocalhost ? 'http://localhost/shopping-list/public/api/shopping-list/get.php?id=' : '/api/shopping-list/get/',
+  getUrl: isLocalhost ? 'http://localhost/shopping-list/public/api/shopping-list/get.php?slid=' : '/api/shopping-list/get/',
   createUrl: isLocalhost? 'http://localhost/shopping-list/public/api/shopping-list/create.php' : '/api/shopping-list/create/'
 };

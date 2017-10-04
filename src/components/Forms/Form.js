@@ -70,7 +70,7 @@ class Form extends React.Component {
     // axios normalne posila data jako JSON, stringify udela transformace, aby to nasledne slo precist pres $_POST
     axios.post(api.createUrl, querystring.stringify({ items: items }))
     .then(function (response) {
-      const newListUrl = response.data.referer + that.state.listUrl + '/' + response.data.id;
+      const newListUrl = response.data.referer + that.state.listUrl + '/' + response.data.slid;
 
       // uspesne ulozeni seznamu
       if (response.data.result === "success") {

@@ -19,12 +19,12 @@ class ShoppingListReceivedView extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.match.params.id !== undefined) {
-      const id = this.props.match.params.id,
+    if (this.props.match.params.slid !== undefined) {
+      const slid = this.props.match.params.slid,
         that = this;
 
-      // perform request to get shopping list by ID
-      axios.get(api.getUrl + id)
+      // perform request to get shopping list by SLID
+      axios.get(api.getUrl + slid)
         .then(function (response) {
           let items = [];
 
