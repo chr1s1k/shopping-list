@@ -145,7 +145,7 @@ class Form extends React.Component {
 
           {items.length > 0 &&
             <div className="action-zone form-group">
-              <button type="button" className="btn btn-primary btn-lg btn-block-xxs" tabIndex="2" onClick={this.handleSaveList}>Hotovo</button>
+              <button type="button" className="btn btn-primary btn-lg btn-block-xxs" tabIndex="2" onClick={this.handleSaveList}>Uložit nákup</button>
               <a href="" className="btn btn-link btn-block-xxs" tabIndex="3" role="button" onClick={this.handleStartOver}>Začít znova</a>
             </div>
           }
