@@ -1,4 +1,4 @@
-import { ADD_ITEM, REMOVE_ITEM, REMOVE_ALL_ITEMS, SET_ITEMS, TOGGLE_ACTIVE } from '../actions/ShoppingListActions';
+import { ADD_ITEM, REMOVE_ITEM, REMOVE_ALL_ITEMS, SET_ITEMS, TOGGLE_ACTIVE, IS_LOADING, HAS_ERRORED } from '../actions/ShoppingListActions';
 
 const ShoppingListReducer = (state = {}, action) => {
   switch (action.type) {
@@ -33,6 +33,14 @@ const ShoppingListReducer = (state = {}, action) => {
           {...state.items[index], active: !state.items[index].active},
           ...state.items.slice(action.index + 1) // a nasledne prida vsechno dal od index+1
         ]
+      };
+
+    case IS_LOADING:
+      return Object.assign(state, {isLoading: action.isLoading});
+
+    case HAS_ERRORED:
+      return {
+        hasErrored: action.hasErrored
       };
 
     default:
