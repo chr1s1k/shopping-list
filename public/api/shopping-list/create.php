@@ -34,6 +34,8 @@ if (isset($_POST['items'])) {
   // get procotol + hostname
   if (isset($_SERVER['REQUEST_SCHEME'])) {
     $protocol = $_SERVER['REQUEST_SCHEME'];
+  } else if (isset($_SERVER['HTTPS'])) {
+    $protocol = "https";
   } else {
     $protocol = "http";
   }
