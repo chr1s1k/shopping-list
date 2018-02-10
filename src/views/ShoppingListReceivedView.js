@@ -15,8 +15,14 @@ class ShoppingListReceivedView extends React.Component {
   componentDidMount() {
     if (this.props.match.params.slid !== undefined) {
       const slid = this.props.match.params.slid;
+      const { items } = this.props;
 
-      this.props.getItems(api.getUrl + slid);
+      // pokud jsme polozky nacetli z localstorage, tak neni potreba se dotazovat API
+      if (!items.length > 0) {
+        this.props.getItems(api.getUrl + slid);
+      } else {
+        this.props.setLoading(false);
+      }
     } else {
       this.props.setItems([]); // pokud chybi SLID, nastav prazdne pole items
     }

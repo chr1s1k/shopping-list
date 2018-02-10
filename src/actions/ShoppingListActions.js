@@ -42,7 +42,7 @@ export function toggleActive(index) {
   };
 };
 
-export function loading(bool) {
+export function setLoading(bool) {
   return {
     type: IS_LOADING,
     isLoading: bool
@@ -58,7 +58,7 @@ export function errored(bool) {
 
 export function getItems(url) {
   return (dispatch) => {
-    dispatch(loading(true)); // set loading
+    dispatch(setLoading(true)); // set loading
 
     // perform request to get shopping list by SLID
     axios.get(url)

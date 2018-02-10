@@ -4,6 +4,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+import persistState, { mergePersistedState } from 'redux-localstorage';
+import adapter from 'redux-localstorage/lib/adapters/localStorage';
+import filter from 'redux-localstorage-filter';
 
 import ShoppingListReducer from './reducers/ShoppingListReducer';
 
@@ -15,13 +18,25 @@ const state = {
   hasErrored: false
 };
 
+const reducer = compose(
+  mergePersistedState()
+)(ShoppingListReducer);
+
+// jaky objekt se ma ukladat do storage
+const storage = compose(
+  filter('items')
+)(adapter(window.localStorage));
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 // vytvori store s uvodnim stavem a moznosti prohlizet store pomoci devtools
 const store = createStore(
-                ShoppingListReducer,
+                reducer,
                 state,
-                composeEnhancers(applyMiddleware(thunk))
+                composeEnhancers(
+                  applyMiddleware(thunk),
+                  persistState(storage, 'ShoppingListStorage')
+                )
               );
 
 // Provider zpristupni store App komponente

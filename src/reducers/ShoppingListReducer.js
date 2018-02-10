@@ -36,7 +36,8 @@ const ShoppingListReducer = (state = {}, action) => {
       };
 
     case IS_LOADING:
-      return Object.assign(state, {isLoading: action.isLoading});
+      // return Object.assign({}, state, {isLoading: action.isLoading});
+      return { ...state, isLoading: action.isLoading }; // vrati kopii objektu state a modifikuje atribut isLoading
 
     case HAS_ERRORED:
       return {
