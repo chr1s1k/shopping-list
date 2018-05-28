@@ -39,7 +39,7 @@ class Form extends React.Component {
     if (this.state.formValue !== '') {
       const item = {
         value: this.state.formValue,
-        active: false
+        active: true
       };
 
       // pridej polozku do store
