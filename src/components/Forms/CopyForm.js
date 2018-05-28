@@ -6,11 +6,17 @@ class CopyForm extends React.Component {
     super();
 
     this.handleOnClick = this.handleOnClick.bind(this);
+    this.handleModifyList = this.handleModifyList.bind(this);
   }
 
   handleOnClick(event) {
     event.preventDefault();
     this.props.handleCreateNewList();
+  }
+
+  handleModifyList(event) {
+    event.preventDefault();
+    this.props.handleModifyList();
   }
 
   render() {
@@ -26,7 +32,10 @@ class CopyForm extends React.Component {
               <button className="btn btn-primary" id="copyListUrlBtn" data-clipboard-target="#shoppingListUrl" tabIndex="1">Zkopírovat</button>
             </span>
           </div>
-          <a href="" className="btn btn-link" onClick={this.handleOnClick} role="button">Napsat nový nákup</a>
+          <div className="btn-group" role="group">
+            <a href="" className="btn btn-link" onClick={this.handleModifyList} role="button">Opravit nákup</a>
+            <a href="" className="btn btn-link" onClick={this.handleOnClick} role="button">Napsat nový nákup</a>
+          </div>
         </div>
       </div>
     );
@@ -35,6 +44,7 @@ class CopyForm extends React.Component {
 
 CopyForm.propTypes = {
   handleCreateNewList: PropTypes.func,
+  handleModifyList: PropTypes.func,
   listUrl: PropTypes.string
 };
 

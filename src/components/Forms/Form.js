@@ -32,6 +32,7 @@ class Form extends React.Component {
     this.handleStartOver = this.handleStartOver.bind(this);
     this.setFocusOnMainInput = this.setFocusOnMainInput.bind(this);
     this.resetForm = this.resetForm.bind(this);
+    this.handleModifyList = this.handleModifyList.bind(this);
   }
 
   handleSubmit(event) {
@@ -89,6 +90,12 @@ class Form extends React.Component {
         isLoading: !prevState.isLoading,
         isFormSubmitted: true
       }));
+    });
+  }
+
+  handleModifyList() {
+    this.setState(prevState => (initialState), () => {
+      this.setFocusOnMainInput();
     });
   }
 
@@ -163,6 +170,7 @@ class Form extends React.Component {
 
           {listSaved &&
             <CopyForm handleCreateNewList={this.resetForm}
+                      handleModifyList={this.handleModifyList}
                       listUrl={this.state.listUrl} />
           }
 
