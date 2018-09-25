@@ -1,5 +1,4 @@
 import React from 'react';
-//import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -14,17 +13,18 @@ class ShoppingListReceivedView extends React.Component {
 
   componentDidMount() {
     if (this.props.match.params.slid !== undefined) {
-      const slid = this.props.match.params.slid;
-      const { items } = this.props;
+      const requestedSlid = this.props.match.params.slid;
+      const { items, slid } = this.props;
 
-      // pokud jsme polozky nacetli z localstorage, tak neni potreba se dotazovat API
-      if (!items.length > 0) {
-        this.props.getItems(api.getUrl + slid);
+			// pokud je parametr slid dostupný z localstorage a odpovídá tomu, který přišel v URL a máme dostupné nějaké položky, tak se není potřeba dotazovat API a načti položky z localstorage
+			if (slid !== undefined && slid === requestedSlid && items.length) {
+				this.props.setLoading(false);
       } else {
-        this.props.setLoading(false);
+				this.props.getItems(api.getUrl + requestedSlid);
       }
     } else {
-      this.props.setItems([]); // pokud chybi SLID, nastav prazdne pole items
+			this.props.setItems([]); // pokud chybi SLID, nastav prazdne pole items
+			this.props.errored(true)
     }
   }
 
@@ -54,8 +54,7 @@ class ShoppingListReceivedView extends React.Component {
           <ShoppingList items={items}
                         listEditable={true}
                         toggleActive={this.props.toggleActive} />
-          <DoneForm removeAllItems={this.props.removeAllItems}
-                    items={items} />
+          <DoneForm items={items} />
         </div>
       );
     }
@@ -64,6 +63,7 @@ class ShoppingListReceivedView extends React.Component {
 
 function mapStateToProps(state) {
   return {
+		slid: state.slid,
     items: state.items,
     isLoading: state.isLoading,
     hasErrored: state.hasErrored

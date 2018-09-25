@@ -1,6 +1,10 @@
 RewriteEngine On
 RewriteBase /
 
+## presmerovani na HTTPS
+#RewriteCond %{HTTPS} off
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
 ## GET
 RewriteRule ^api/shopping-list/get/$ /api/shopping-list/get.php [L]
 RewriteRule ^api/shopping-list/get/(.*[^/])$ /api/shopping-list/get.php?slid=$1 [L]

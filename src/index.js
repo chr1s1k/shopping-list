@@ -13,6 +13,7 @@ import ShoppingListReducer from './reducers/ShoppingListReducer';
 import App from './components/App/App';
 
 const state = {
+	slid: null,
   items: [],
   isLoading: true,
   hasErrored: false
@@ -24,7 +25,7 @@ const reducer = compose(
 
 // jaky objekt se ma ukladat do storage
 const storage = compose(
-  filter('items')
+  filter(['slid', 'items'])
 )(adapter(window.localStorage));
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

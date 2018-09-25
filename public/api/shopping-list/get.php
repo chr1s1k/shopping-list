@@ -9,8 +9,8 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once '../database.php';
 include_once './ShoppingList.php';
 
-$items_arr = array();
-$items_arr["items"] = array();
+$json_response = array();
+$json_response["items"] = array();
 
 // check for parameter
 if (isset($_GET['slid'])) {
@@ -33,10 +33,11 @@ if (isset($_GET['slid'])) {
     // fetch() is faster than fetchAll();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
       $items = explode("|", $row['items']);
-      $items_arr["items"] = $items;
+			$json_response["items"] = $items;
+			$json_response["slid"] = $row['slid'];
     }
   }
 }
 
 // send JSON response
-echo json_encode($items_arr);
+echo json_encode($json_response);

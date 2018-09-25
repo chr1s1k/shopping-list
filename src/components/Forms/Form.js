@@ -125,7 +125,7 @@ class Form extends React.Component {
   }
 
   resetForm() {
-    this.props.removeAllItems();
+    this.props.resetList();
     this.setState(prevState => (initialState), () => {
       this.setFocusOnMainInput();
     });

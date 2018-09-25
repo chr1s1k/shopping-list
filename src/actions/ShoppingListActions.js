@@ -7,6 +7,8 @@ export const SET_ITEMS = 'SET_ITEMS';
 export const TOGGLE_ACTIVE = 'TOGGLE_ACTIVE';
 export const IS_LOADING = 'IS_LOADING';
 export const HAS_ERRORED = 'HAS_ERRORED';
+export const SET_LIST = 'SET_LIST'
+export const RESET_LIST = 'RESET_LIST'
 
 export function addItem(item) {
   return {
@@ -56,6 +58,20 @@ export function errored(bool) {
   };
 };
 
+export function setList(items, slid) {
+	return {
+		type: SET_LIST,
+		items: items,
+		slid: slid
+	}
+}
+
+export function resetList() {
+	return {
+		type: RESET_LIST
+	}
+}
+
 export function getItems(url) {
   return (dispatch) => {
     dispatch(setLoading(true)); // set loading
@@ -72,7 +88,8 @@ export function getItems(url) {
           });
         });
 
-        dispatch(setItems(items));
+				dispatch(setList(items, response.data.slid))
+				dispatch(setLoading(false))
       })
       .catch((error) => {
         dispatch(errored(true));

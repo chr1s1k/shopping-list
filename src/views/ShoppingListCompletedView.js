@@ -8,7 +8,7 @@ import * as shoppingListActions from '../actions/ShoppingListActions';
 class ShoppingListCompletedView extends React.Component {
 
   componentDidMount() {
-    this.props.removeAllItems();
+    this.props.resetList();
   }
 
   render() {
