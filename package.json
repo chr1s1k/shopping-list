@@ -20,6 +20,9 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "axios": "^0.16.2"
+    "axios": "^0.16.2",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-react": "^7.11.1"
   }
 }

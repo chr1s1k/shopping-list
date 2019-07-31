@@ -1,201 +1,216 @@
-import React from 'react';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React from 'react'
+import axios from 'axios'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-import ShoppingList from '../ShoppingList/ShoppingList';
-import CopyForm from './CopyForm';
-import ErrorForm from './ErrorForm';
-import Loader from '../Loader/Loader';
-import { api } from '../../config/api';
+import ShoppingList from '../ShoppingList/ShoppingList'
+import CopyForm from './CopyForm'
+import ErrorForm from './ErrorForm'
+import Loader from '../Loader/Loader'
+import { api } from '../../config/api'
 
-import * as shoppingListActions from '../../actions/ShoppingListActions';
+import * as shoppingListActions from '../../actions/ShoppingListActions'
 
 const initialState = {
-  formValue: '',
-  isFormSubmitted: false,
-  listSaved: false,
-  listUrl: '/nakup',
-  isLoading: false
-};
+	formValue: '',
+	isFormSubmitted: false,
+	listSaved: false,
+	listUrl: '/nakup',
+	isLoading: false
+}
 
 class Form extends React.Component {
-  constructor() {
-    super();
+	constructor() {
+		super()
 
-    this.state = initialState;
+		this.state = initialState
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSaveList = this.handleSaveList.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleRemoveItem = this.handleRemoveItem.bind(this);
-    this.handleStartOver = this.handleStartOver.bind(this);
-    this.setFocusOnMainInput = this.setFocusOnMainInput.bind(this);
-    this.resetForm = this.resetForm.bind(this);
-    this.handleModifyList = this.handleModifyList.bind(this);
-  }
+		this.handleSubmit = this.handleSubmit.bind(this)
+		this.handleSaveList = this.handleSaveList.bind(this)
+		this.handleChange = this.handleChange.bind(this)
+		this.handleRemoveItem = this.handleRemoveItem.bind(this)
+		this.handleStartOver = this.handleStartOver.bind(this)
+		this.setFocusOnMainInput = this.setFocusOnMainInput.bind(this)
+		this.resetForm = this.resetForm.bind(this)
+		this.handleModifyList = this.handleModifyList.bind(this)
+	}
 
-  handleSubmit(event) {
-    event.preventDefault();
-    if (this.state.formValue !== '') {
-      const item = {
-        value: this.state.formValue,
-        active: true
-      };
+	handleSubmit(event) {
+		event.preventDefault()
+		if (this.state.formValue !== '') {
+			const item = {
+				value: this.state.formValue,
+				active: true
+			}
 
-      // pridej polozku do store
-      this.props.addItem(item);
+			// pridej polozku do store
+			this.props.addItem(item)
 
-      this.setState(prevState => ({
-        formValue: '' // vyresetuj uzivatelskej vstup
-      }));
-    }
-  }
+			this.setState(prevState => ({
+				formValue: '' // vyresetuj uzivatelskej vstup
+			}))
 
-  handleSaveList(event) {
-    const that = this;
-    let items = [];
+			this.setFocusOnMainInput()
+		}
+	}
 
-    this.props.items.map((item, index) => {
-      return items.push(item.value);
-    });
+	handleSaveList() {
+		const that = this
+		let items = []
 
-    items = items.join('|');
+		this.props.items.map((item) => {
+			return items.push(item.value)
+		})
 
-    this.setState(prevState => ({
-      isLoading: true
-    }));
+		items = items.join('|')
 
-    const querystring = require('querystring');
+		this.setState(prevState => ({
+			isLoading: true
+		}))
 
-    // axios normalne posila data jako JSON, stringify udela transformace, aby to nasledne slo precist pres $_POST
-    axios.post(api.createUrl, querystring.stringify({ items: items }))
-    .then(function (response) {
-      const newListUrl = response.data.referer + that.state.listUrl + '/' + response.data.slid;
+		const querystring = require('querystring')
 
-      // uspesne ulozeni seznamu
-      if (response.data.result === "success") {
-        that.setState(prevState => ({
-          listSaved: true,
-          listUrl: newListUrl
-        }));
-      }
-      this.setState(prevState => ({
-        isLoading: !prevState.isLoading,
-        isFormSubmitted: !prevState.isFormSubmitted
-      }));
-    })
-    .catch(function (error) { // neuspesne ulozeni seznamu
-      that.setState(prevState => ({
-        isLoading: !prevState.isLoading,
-        isFormSubmitted: true
-      }));
-    });
-  }
+		// axios normalne posila data jako JSON, stringify udela transformace, aby to nasledne slo precist pres $_POST
+		axios.post(api.createUrl, querystring.stringify({ items: items })).then(function (response) {
+			const newListUrl = response.data.referer + that.state.listUrl + '/' + response.data.slid
 
-  handleModifyList() {
-    this.setState(prevState => (initialState), () => {
-      this.setFocusOnMainInput();
-    });
-  }
+			// uspesne ulozeni seznamu
+			if (response.data.result === 'success') {
+				that.setState(prevState => ({
+					listSaved: true,
+					listUrl: newListUrl
+				}))
+			}
+			this.setState(prevState => ({
+				isLoading: !prevState.isLoading,
+				isFormSubmitted: !prevState.isFormSubmitted
+			}))
+		})
+		.catch(function (error) { // neuspesne ulozeni seznamu
+			that.setState(prevState => ({
+				isLoading: !prevState.isLoading,
+				isFormSubmitted: true
+			}))
+		})
+	}
 
-  handleChange(event) {
-    this.setState({
-      formValue: event.target.value
-    });
-  }
+	handleModifyList() {
+		this.setState(prevState => (initialState), () => {
+			this.setFocusOnMainInput()
+		})
+	}
 
-  handleRemoveItem(index) {
-    this.props.removeItem(index);
-//    if (this.state.items.length === 0) { // pokud odeberu vsechny polozky => nastav focus na hlavni input
-//      this.setFocusOnMainInput();
-//    }
-  }
+	handleChange(event) {
+		this.setState({
+			formValue: event.target.value
+		})
+	}
 
-  handleStartOver(event) {
-    event.preventDefault();
-    var reset = window.confirm('Opravdu chceš smazat aktuální seznam a začít znova?');
-    if (reset) {
-      this.resetForm();
-    }
-  }
+	handleRemoveItem(index) {
+		this.props.removeItem(index)
+	}
 
-  setFocusOnMainInput() {
-    this.mainInput.focus();
-  }
+	componentDidUpdate() {
+		if (!this.props.items.length && this.state.formValue === '') { // pokud odeberu vsechny polozky => nastav focus na hlavni input
+			this.setFocusOnMainInput()
+		}
+	}
 
-  resetForm() {
-    this.props.resetList();
-    this.setState(prevState => (initialState), () => {
-      this.setFocusOnMainInput();
-    });
-  }
+	handleStartOver(event) {
+		event.preventDefault()
+		var reset = window.confirm('Opravdu chceš smazat aktuální seznam a začít znova?')
+		if (reset) {
+			this.resetForm()
+		}
+	}
 
-  render() {
-    const { isFormSubmitted, listSaved, isLoading } = this.state;
-    const { items } = this.props;
+	setFocusOnMainInput() {
+		this.mainInput.focus()
+	}
 
-    if (!isFormSubmitted) { // formular pro vytvoreni seznamu
-      return (
-        <form action="/" method="get" onSubmit={this.handleSubmit} className={isLoading ? 'loading' : ''}>
+	resetForm() {
+		this.props.resetList()
+		this.setState(prevState => (initialState), () => {
+			this.setFocusOnMainInput()
+		})
+	}
 
-          <Loader showLoader={isLoading} />
+	render() {
+		const { isFormSubmitted, listSaved, isLoading, formValue } = this.state
+		const { items } = this.props
 
-          <div className="form-group">
-            <label htmlFor="item" className="sr-only">Zadejte, co chcete nakoupit</label>
-            <input type="text" name="item" id="item" value={this.state.formValue} className="form-control input-lg" placeholder="Co chceš nakoupit?" tabIndex="1" autoFocus onChange={this.handleChange} ref={(input) => { this.mainInput = input; }} />
-          </div>
+		if (!isFormSubmitted) { // formular pro vytvoreni seznamu
+			return (
+				<form action="/" method="get" onSubmit={this.handleSubmit} className={isLoading ? 'loading' : ''}>
 
-          <ShoppingList items={items}
-                        handleRemoveItem={this.handleRemoveItem}
-                        listReadOnly={isFormSubmitted} />
+					<Loader showLoader={isLoading} />
 
-          {items.length > 0 &&
-            <div className="action-zone form-group">
-              <button type="button" className="btn btn-primary btn-lg btn-block-xxs" tabIndex="2" onClick={this.handleSaveList}>Uložit nákup</button>
-              <a href="" className="btn btn-link btn-block-xxs" tabIndex="3" role="button" onClick={this.handleStartOver}>Začít znova</a>
-            </div>
-          }
-        </form>
-      );
-    } else { // hotovy seznam + pro formular pro zkopirovani URL seznamu nebo pro opetovne ulozeni
-      return (
-        <div className={isLoading ? 'loading' : ''}>
+					<div className="form-group relative">
+						<label htmlFor="item" className="sr-only">Zadej, co chceš nakoupit</label>
+						<input type="text" name="item" id="item" value={formValue} className="form-control input-lg input-main" placeholder="Co chceš nakoupit?" tabIndex="1" autoFocus onChange={this.handleChange} ref={(input) => { this.mainInput = input }} />
+						{formValue !== '' &&
+							<button type="submit" className="btn btn-link btn-lg btn-add-item visible-xs" aria-label="Potvrdit">
+								<i className="glyphicon glyphicon-plus" aria-hidden="true"></i>
+							</button>
+						}
+					</div>
 
-          <Loader showLoader={isLoading} />
+					<ShoppingList items={items}
+						handleRemoveItem={this.handleRemoveItem}
+						listReadOnly={isFormSubmitted}
+					/>
 
-          <ShoppingList items={items}
-                        handleRemoveItem={this.handleRemoveItem}
-                        listReadOnly={isFormSubmitted} />
+					{items.length > 0 &&
+						<div className="action-zone form-group">
+							<button type="button" className="btn btn-primary btn-lg btn-block-xxs" tabIndex="2" onClick={this.handleSaveList}>Uložit nákup</button>
+							<a href="" className="btn btn-link btn-block-xxs" tabIndex="3" role="button" onClick={this.handleStartOver}>Začít znova</a>
+						</div>
+					}
+				</form>
+			)
+		} else { // hotovy seznam + pro formular pro zkopirovani URL seznamu nebo pro opetovne ulozeni
+			return (
+				<div className={isLoading ? 'loading' : ''}>
+					<Loader showLoader={isLoading} />
 
-          {listSaved &&
-            <CopyForm handleCreateNewList={this.resetForm}
-                      handleModifyList={this.handleModifyList}
-                      listUrl={this.state.listUrl} />
-          }
+					<ShoppingList
+						items={items}
+						handleRemoveItem={this.handleRemoveItem}
+						listReadOnly={isFormSubmitted}
+					/>
 
-          {!listSaved &&
-            <ErrorForm handleSaveList={this.handleSaveList}
-                       handleStartOver={this.handleStartOver} />
-          }
-        </div>
-      );
-    }
-  }
+					{listSaved && (
+						<CopyForm
+							handleCreateNewList={this.resetForm}
+							handleModifyList={this.handleModifyList}
+							listUrl={this.state.listUrl}
+						/>
+					)}
+
+					{!listSaved && (
+						<ErrorForm
+							handleSaveList={this.handleSaveList}
+							handleStartOver={this.handleStartOver}
+						/>
+					)}
+				</div>
+			)
+		}
+	}
 }
 
 // mapovani hlavniho stavu na props
 function mapStateToProps(state) {
-  return {
-    items: state.items
-  };
+	return {
+		items: state.items
+	}
 }
 
 // mapovani
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(shoppingListActions, dispatch);
+	return bindActionCreators(shoppingListActions, dispatch)
 }
 
-const form = connect(mapStateToProps, mapDispatchToProps);
+const form = connect(mapStateToProps, mapDispatchToProps)
 
-export default form(Form);
+export default form(Form)
