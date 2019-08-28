@@ -4,7 +4,10 @@
 			"es6": true,
 			"jest": true
 	},
-	"extends": "eslint:recommended",
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended"
+	],
 	"parser": "babel-eslint",
 	"parserOptions": {
 			"ecmaFeatures": {
@@ -36,6 +39,7 @@
 					"error",
 					"never"
 			],
-			"react/jsx-uses-vars": "error"
+			"react/jsx-uses-vars": "error",
+			"no-useless-catch": false
 	}
 }

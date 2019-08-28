@@ -36,7 +36,7 @@ class ErrorForm extends React.Component {
 						Znovu uložit
 					</button>
 					<a
-						href=""
+						href="/"
 						className="btn btn-link btn-block-xxs"
 						tabIndex="2"
 						role="button"
@@ -50,7 +50,7 @@ class ErrorForm extends React.Component {
 	}
 }
 
-ErrorForm.propType = {
+ErrorForm.propTypes = {
 	handleSaveList: PropTypes.func,
 	handleStartOver: PropTypes.func
 }

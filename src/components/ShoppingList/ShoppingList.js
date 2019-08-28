@@ -3,30 +3,32 @@ import PropTypes from 'prop-types'
 
 import ShoppingListItem from './ShoppingListItem'
 
-class ShoppingList extends React.Component {
-	render() {
-		const items = this.props.items
-
-		if (items === undefined || !items.length > 0) {
-			return null // v pripade prazdneho pole se tato komponenta ShoppingList vubec nevykresli
-		}
-
-		return (
-			<div className="list-group list-items">
-				{items.map((item, index) => (
-					<ShoppingListItem
-						key={index}
-						index={index}
-						item={item}
-						handleOnClick={this.props.handleRemoveItem}
-						readOnly={this.props.listReadOnly}
-						editable={this.props.listEditable}
-						toggleActive={this.props.toggleActive}
-					/>
-				))}
-			</div>
-		)
+const ShoppingList = ({
+	items,
+	handleRemoveItem,
+	listReadOnly,
+	listEditable,
+	toggleActive
+}) => {
+	if (!items || !items.length > 0) {
+		return null // v pripade prazdneho pole se tato komponenta ShoppingList vubec nevykresli
 	}
+
+	return (
+		<div className="list-group list-items">
+			{items.map((item, index) => (
+				<ShoppingListItem
+					key={index}
+					index={index}
+					item={item}
+					handleOnClick={handleRemoveItem}
+					readOnly={listReadOnly}
+					editable={listEditable}
+					toggleActive={toggleActive}
+				/>
+			))}
+		</div>
+	)
 }
 
 // prop.items se ocekava jako pole
@@ -35,7 +37,8 @@ ShoppingList.propTypes = {
 	items: PropTypes.array,
 	handleRemoveItem: PropTypes.func,
 	listReadOnly: PropTypes.bool,
-	listEditable: PropTypes.bool
+	listEditable: PropTypes.bool,
+	toggleActive: PropTypes.func,
 }
 
 export default ShoppingList

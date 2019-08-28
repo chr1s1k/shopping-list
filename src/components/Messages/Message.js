@@ -1,13 +1,17 @@
-import React from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-class Message extends React.Component {
-  render() {
-    return (
-      <div className={"alert alert-" + this.props.type} role="alert">
-        <p className={this.props.type === 'danger' ? "text-center" : ""}>{this.props.text}</p>
-      </div>
-    );
-  }
+const Message = ({ type, text }) => (
+	<div className={'alert alert-' + type} role="alert">
+		<p className={this.props.type === 'danger' ? 'text-center' : ''}>
+			{text}
+		</p>
+	</div>
+)
+
+Message.propTypes = {
+	type: PropTypes.string,
+	text: PropTypes.string,
 }
 
-export default Message;
+export default Message

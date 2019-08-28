@@ -1,18 +1,21 @@
-import React from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-class Loader extends React.Component {
-  render() {
-    if (this.props.showLoader) {
-      return (
-        <div>
-          <div className="loader"></div>
-          <div className="overlay"></div>
-        </div>
-      );
-    } else {
-      return null;
-    }
-  }
+const Loader = ({ showLoader }) => {
+	if (!showLoader) {
+		return null
+	}
+
+	return (
+		<div>
+			<div className="loader"></div>
+			<div className="overlay"></div>
+		</div>
+	)
 }
 
-export default Loader;
+Loader.propTypes = {
+	showLoader: PropTypes.bool,
+}
+
+export default Loader

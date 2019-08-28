@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 class DoneForm extends React.Component {
 	constructor() {
@@ -62,6 +63,10 @@ class DoneForm extends React.Component {
 			</div>
 		)
 	}
+}
+
+DoneForm.propTypes = {
+	items: PropTypes.array,
 }
 
 export default DoneForm

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import querystring from 'querystring'
+import PropTypes from 'prop-types'
 
 import ShoppingList from '../ShoppingList/ShoppingList'
 import CopyForm from './CopyForm'
@@ -162,7 +163,7 @@ class Form extends React.Component {
 					{items.length > 0 &&
 						<div className="action-zone form-group">
 							<button type="button" className="btn btn-primary btn-lg btn-block-xxs" tabIndex="2" onClick={this.handleSaveList}>Uložit nákup</button>
-							<a href="" className="btn btn-link btn-block-xxs" tabIndex="3" role="button" onClick={this.handleStartOver}>Začít znova</a>
+							<button type="button" className="btn btn-link btn-block-xxs" tabIndex="3" onClick={this.handleStartOver}>Začít znova</button>
 						</div>
 					}
 				</form>
@@ -198,6 +199,13 @@ class Form extends React.Component {
 	}
 }
 
+Form.propTypes = {
+	resetList: PropTypes.func,
+	removeItem: PropTypes.func,
+	addItem: PropTypes.func,
+	items: PropTypes.array,
+}
+
 // mapovani hlavniho stavu na props
 function mapStateToProps(state) {
 	return {
@@ -210,6 +218,4 @@ function mapDispatchToProps(dispatch) {
 	return bindActionCreators(shoppingListActions, dispatch)
 }
 
-const form = connect(mapStateToProps, mapDispatchToProps)
-
-export default form(Form)
+export default connect(mapStateToProps, mapDispatchToProps)(Form)
