@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
-import { shallow, render } from 'enzyme'
+import { shallow } from 'enzyme'
 
 import ShoppingList from './ShoppingList'
 // import ShoppingListItem from './ShoppingListItem'
