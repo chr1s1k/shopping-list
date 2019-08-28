@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import querystring from 'querystring'
 
 import ShoppingList from '../ShoppingList/ShoppingList'
 import CopyForm from './CopyForm'
@@ -46,7 +47,7 @@ class Form extends React.Component {
 			// pridej polozku do store
 			this.props.addItem(item)
 
-			this.setState(prevState => ({
+			this.setState(() => ({
 				formValue: '' // vyresetuj uzivatelskej vstup
 			}))
 
@@ -64,11 +65,9 @@ class Form extends React.Component {
 
 		items = items.join('|')
 
-		this.setState(prevState => ({
+		this.setState(() => ({
 			isLoading: true
 		}))
-
-		const querystring = require('querystring')
 
 		// axios normalne posila data jako JSON, stringify udela transformace, aby to nasledne slo precist pres $_POST
 		axios.post(api.createUrl, querystring.stringify({ items: items })).then(function (response) {
@@ -76,7 +75,7 @@ class Form extends React.Component {
 
 			// uspesne ulozeni seznamu
 			if (response.data.result === 'success') {
-				that.setState(prevState => ({
+				that.setState(() => ({
 					listSaved: true,
 					listUrl: newListUrl
 				}))
@@ -86,16 +85,16 @@ class Form extends React.Component {
 				isFormSubmitted: !prevState.isFormSubmitted
 			}))
 		})
-		.catch(function (error) { // neuspesne ulozeni seznamu
-			that.setState(prevState => ({
-				isLoading: !prevState.isLoading,
-				isFormSubmitted: true
-			}))
-		})
+			.catch(function () { // neuspesne ulozeni seznamu
+				that.setState(prevState => ({
+					isLoading: !prevState.isLoading,
+					isFormSubmitted: true
+				}))
+			})
 	}
 
 	handleModifyList() {
-		this.setState(prevState => (initialState), () => {
+		this.setState(() => (initialState), () => {
 			this.setFocusOnMainInput()
 		})
 	}
@@ -130,7 +129,7 @@ class Form extends React.Component {
 
 	resetForm() {
 		this.props.resetList()
-		this.setState(prevState => (initialState), () => {
+		this.setState(() => (initialState), () => {
 			this.setFocusOnMainInput()
 		})
 	}

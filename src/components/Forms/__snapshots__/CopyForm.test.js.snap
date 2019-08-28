@@ -1,0 +1,132 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CopyForm should render correctly with listURL prop 1`] = `
+<div>
+  <div
+    className="alert alert-success"
+    role="alert"
+  >
+    <p>
+      <i
+        className="glyphicon glyphicon-ok"
+      />
+       Výborně! Nyní už stačí jen zkopírovat adresu nákupu a někomu poslat!
+    </p>
+  </div>
+  <div
+    className="action-zone form-group"
+  >
+    <div
+      className="input-group"
+    >
+      <input
+        className="form-control"
+        id="shoppingListUrl"
+        name="shoppingListUrl"
+        readOnly={true}
+        tabIndex="2"
+        type="text"
+        value="/test/url"
+      />
+      <span
+        className="input-group-btn"
+      >
+        <button
+          className="btn btn-primary"
+          data-clipboard-target="#shoppingListUrl"
+          id="copyListUrlBtn"
+          tabIndex="1"
+        >
+          Zkopírovat
+        </button>
+      </span>
+    </div>
+    <div
+      className="btn-group"
+      role="group"
+    >
+      <a
+        className="btn btn-link"
+        href=""
+        onClick={[Function]}
+        role="button"
+      >
+        Opravit nákup
+      </a>
+      <a
+        className="btn btn-link"
+        href=""
+        onClick={[Function]}
+        role="button"
+      >
+        Napsat nový nákup
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CopyForm should render correctly without props 1`] = `
+<div>
+  <div
+    className="alert alert-success"
+    role="alert"
+  >
+    <p>
+      <i
+        className="glyphicon glyphicon-ok"
+      />
+       Výborně! Nyní už stačí jen zkopírovat adresu nákupu a někomu poslat!
+    </p>
+  </div>
+  <div
+    className="action-zone form-group"
+  >
+    <div
+      className="input-group"
+    >
+      <input
+        className="form-control"
+        id="shoppingListUrl"
+        name="shoppingListUrl"
+        readOnly={true}
+        tabIndex="2"
+        type="text"
+      />
+      <span
+        className="input-group-btn"
+      >
+        <button
+          className="btn btn-primary"
+          data-clipboard-target="#shoppingListUrl"
+          id="copyListUrlBtn"
+          tabIndex="1"
+        >
+          Zkopírovat
+        </button>
+      </span>
+    </div>
+    <div
+      className="btn-group"
+      role="group"
+    >
+      <a
+        className="btn btn-link"
+        href=""
+        onClick={[Function]}
+        role="button"
+      >
+        Opravit nákup
+      </a>
+      <a
+        className="btn btn-link"
+        href=""
+        onClick={[Function]}
+        role="button"
+      >
+        Napsat nový nákup
+      </a>
+    </div>
+  </div>
+</div>
+`;
