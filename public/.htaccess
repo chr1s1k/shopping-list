@@ -16,4 +16,4 @@ RewriteRule ^api/shopping-list/create/$ /api/shopping-list/create.php [L]
 RewriteRule ^(api)($|/) - [L]
 
 ## vsechny ostatni requesty vyjma souboru s koncovkama nize smeruj na index.html
-RewriteRule !\.(pdf|js|ico|gif|jpg|png|css|rar|zip|eot|svg|ttf|woff|woff2|map|tar\.gz)$ index.html [L]
+RewriteRule !\.(pdf|js|json|ico|gif|jpg|png|css|rar|zip|eot|svg|ttf|woff|woff2|map|tar\.gz)$ index.html [L]
