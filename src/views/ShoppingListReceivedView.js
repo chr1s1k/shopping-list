@@ -12,7 +12,7 @@ import * as shoppingListActions from '../actions/ShoppingListActions'
 
 class ShoppingListReceivedView extends React.Component {
 	componentDidMount() {
-		if (this.props.match.params.slid !== undefined) {
+		if (this.props.match.params.slid) {
 			const requestedSlid = this.props.match.params.slid
 			const { items, slid } = this.props
 

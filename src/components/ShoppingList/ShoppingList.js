@@ -10,7 +10,7 @@ const ShoppingList = ({
 	listEditable,
 	toggleActive
 }) => {
-	if (!items || !items.length > 0) {
+	if (!items || !items.length) {
 		return null // v pripade prazdneho pole se tato komponenta ShoppingList vubec nevykresli
 	}
 

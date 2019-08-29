@@ -39,6 +39,7 @@ class Form extends React.Component {
 
 	handleSubmit(event) {
 		event.preventDefault()
+
 		if (this.state.formValue !== '') {
 			const item = {
 				value: this.state.formValue,
@@ -118,7 +119,8 @@ class Form extends React.Component {
 
 	handleStartOver(event) {
 		event.preventDefault()
-		var reset = window.confirm('Opravdu chceš smazat aktuální seznam a začít znova?')
+		const reset = window.confirm('Opravdu chceš smazat aktuální seznam a začít znova?')
+
 		if (reset) {
 			this.resetForm()
 		}

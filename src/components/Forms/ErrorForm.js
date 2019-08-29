@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Message from '../Messages/Message'
 
 class ErrorForm extends React.Component {
 	constructor() {
@@ -20,12 +21,7 @@ class ErrorForm extends React.Component {
 	render() {
 		return (
 			<div>
-				<div className="alert alert-danger" role="alert">
-					<p>
-						<i className="glyphicon glyphicon-exclamation-sign text-danger" />{' '}
-						Jejda! Nákup se nepodařilo uložit, zkus to prosím znova.
-					</p>
-				</div>
+				<Message type="danger" text="Jejda! Nákup se nepodařilo uložit, zkus to prosím znova." />
 				<div className="action-zone form-group">
 					<button
 						type="button"
@@ -52,7 +48,7 @@ class ErrorForm extends React.Component {
 
 ErrorForm.propTypes = {
 	handleSaveList: PropTypes.func,
-	handleStartOver: PropTypes.func
+	handleStartOver: PropTypes.func,
 }
 
 export default ErrorForm

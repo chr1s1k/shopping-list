@@ -12,19 +12,21 @@ class ShoppingListItem extends React.Component {
 	handleOnClick(event) {
 		event.preventDefault()
 		const { index } = this.props
+
 		this.props.handleOnClick(index)
 	}
 
 	changeItemState(event) {
 		event.preventDefault()
 		const { index } = this.props
+
 		this.props.toggleActive(index)
 	}
 
 	render() {
 		const { item, readOnly, editable } = this.props
 
-		if (readOnly !== undefined && !readOnly) {
+		if (!readOnly) {
 			return (
 				<a
 					href="/"
