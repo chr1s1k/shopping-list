@@ -40,6 +40,6 @@
 					"never"
 			],
 			"react/jsx-uses-vars": "error",
-			"no-useless-catch": false
+			"no-useless-catch": 1
 	}
 }

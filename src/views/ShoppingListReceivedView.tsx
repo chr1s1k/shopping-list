@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import PropTypes from 'prop-types'
+import { bindActionCreators, Dispatch } from 'redux'
 
 import ShoppingList from '../components/ShoppingList/ShoppingList'
 import DoneForm from '../components/Forms/DoneForm'
@@ -9,11 +8,26 @@ import Message from '../components/Messages/Message'
 import { api } from '../config/api'
 
 import * as shoppingListActions from '../actions/ShoppingListActions'
+import { ShoppingListState, Item } from '../interfaces/types'
+import { RouteComponentProps } from 'react-router'
 
-class ShoppingListReceivedView extends React.Component {
+interface IProps extends RouteComponentProps {
+	items: Array<Item>,
+	slid: string,
+	isLoading: boolean,
+	hasErrored: boolean,
+	setLoading: (loading: boolean) => void,
+	getItems: (url: string) => void,
+	setItems: (items: Array<Item>) => void,
+	errored: (hasError: boolean) => void,
+	toggleActive: () => void
+}
+
+class ShoppingListReceivedView extends React.Component<IProps> {
 	componentDidMount() {
-		if (this.props.match.params.slid) {
-			const requestedSlid = this.props.match.params.slid
+		const requestedSlid = (this.props.match.params as any).slid
+
+		if (requestedSlid) {
 			const { items, slid } = this.props
 
 			// pokud je parametr slid dostupný z localstorage a odpovídá tomu, který přišel v URL a máme dostupné nějaké položky, tak se není potřeba dotazovat API a načti položky z localstorage
@@ -47,7 +61,7 @@ class ShoppingListReceivedView extends React.Component {
 				</div>
 			)
 		} else {
-			if (!items.length > 0) {
+			if (!items.length) {
 				return (
 					<Message
 						type='danger'
@@ -70,20 +84,7 @@ class ShoppingListReceivedView extends React.Component {
 	}
 }
 
-ShoppingListReceivedView.propTypes = {
-	isLoading: PropTypes.bool,
-	hasErrored: PropTypes.bool,
-	toggleActive: PropTypes.func,
-	setLoading: PropTypes.func,
-	setItems: PropTypes.func,
-	getItems: PropTypes.func,
-	errored: PropTypes.func,
-	match: PropTypes.object,
-	items: PropTypes.array.isRequired,
-	slid: PropTypes.string,
-}
-
-function mapStateToProps(state) {
+function mapStateToProps(state: ShoppingListState) {
 	return {
 		slid: state.slid,
 		items: state.items,
@@ -92,8 +93,8 @@ function mapStateToProps(state) {
 	}
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: Dispatch) {
 	return bindActionCreators(shoppingListActions, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShoppingListReceivedView)
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppingListReceivedView as any)

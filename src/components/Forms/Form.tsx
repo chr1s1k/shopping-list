@@ -1,9 +1,8 @@
-import React from 'react'
+import React, { FormEvent, MouseEvent, ChangeEvent } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, Dispatch } from 'redux'
 import querystring from 'querystring'
-import PropTypes from 'prop-types'
 
 import ShoppingList from '../ShoppingList/ShoppingList'
 import CopyForm from './CopyForm'
@@ -11,7 +10,23 @@ import ErrorForm from './ErrorForm'
 import Loader from '../Loader/Loader'
 import { api } from '../../config/api'
 
-import * as shoppingListActions from '../../actions/ShoppingListActions'
+import * as ShoppingListActions from '../../actions/ShoppingListActions'
+import { Item, ShoppingListState } from '../../interfaces/types'
+
+interface IProps {
+	items: Array<Item>,
+	addItem: (item: Item) => void,
+	resetList: () => void,
+	removeItem: (index: number) => void
+}
+
+interface IState {
+	formValue: string,
+	isFormSubmitted: boolean,
+	listSaved: boolean,
+	listUrl: string,
+	isLoading: boolean
+}
 
 const initialState = {
 	formValue: '',
@@ -21,11 +36,15 @@ const initialState = {
 	isLoading: false
 }
 
-class Form extends React.Component {
-	constructor() {
-		super()
+class Form extends React.Component<IProps, IState> {
+
+	private mainInput: HTMLElement | null
+
+	constructor(props: IProps) {
+		super(props)
 
 		this.state = initialState
+		this.mainInput = null
 
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleSaveList = this.handleSaveList.bind(this)
@@ -37,7 +56,7 @@ class Form extends React.Component {
 		this.handleModifyList = this.handleModifyList.bind(this)
 	}
 
-	handleSubmit(event) {
+	handleSubmit(event: FormEvent) {
 		event.preventDefault()
 
 		if (this.state.formValue !== '') {
@@ -59,13 +78,9 @@ class Form extends React.Component {
 
 	handleSaveList() {
 		const that = this
-		let items = []
+		let items: string
 
-		this.props.items.map((item) => {
-			return items.push(item.value)
-		})
-
-		items = items.join('|')
+		items = this.props.items.map((item: Item) => item.value).join('|')
 
 		this.setState(() => ({
 			isLoading: true
@@ -82,7 +97,7 @@ class Form extends React.Component {
 					listUrl: newListUrl
 				}))
 			}
-			this.setState(prevState => ({
+			that.setState((prevState: IState) => ({
 				isLoading: !prevState.isLoading,
 				isFormSubmitted: !prevState.isFormSubmitted
 			}))
@@ -101,13 +116,13 @@ class Form extends React.Component {
 		})
 	}
 
-	handleChange(event) {
+	handleChange(event: ChangeEvent<HTMLInputElement>) {
 		this.setState({
 			formValue: event.target.value
 		})
 	}
 
-	handleRemoveItem(index) {
+	handleRemoveItem(index: number) {
 		this.props.removeItem(index)
 	}
 
@@ -117,7 +132,7 @@ class Form extends React.Component {
 		}
 	}
 
-	handleStartOver(event) {
+	handleStartOver(event: MouseEvent) {
 		event.preventDefault()
 		const reset = window.confirm('Opravdu chceš smazat aktuální seznam a začít znova?')
 
@@ -127,7 +142,9 @@ class Form extends React.Component {
 	}
 
 	setFocusOnMainInput() {
-		this.mainInput.focus()
+		if (this.mainInput) {
+			this.mainInput.focus()
+		}
 	}
 
 	resetForm() {
@@ -149,7 +166,7 @@ class Form extends React.Component {
 
 					<div className="form-group relative">
 						<label htmlFor="item" className="sr-only">Zadej, co chceš nakoupit</label>
-						<input type="text" name="item" id="item" value={formValue} className="form-control input-lg input-main" placeholder="Co chceš nakoupit?" tabIndex="1" autoFocus onChange={this.handleChange} ref={(input) => { this.mainInput = input }} />
+						<input type="text" name="item" id="item" value={formValue} className="form-control input-lg input-main" placeholder="Co chceš nakoupit?" tabIndex={2} autoFocus onChange={this.handleChange} ref={(input) => { this.mainInput = input }} />
 						{formValue !== '' &&
 							<button type="submit" className="btn btn-link btn-lg btn-add-item visible-xs" aria-label="Potvrdit">
 								<i className="glyphicon glyphicon-plus" aria-hidden="true"></i>
@@ -164,8 +181,8 @@ class Form extends React.Component {
 
 					{items.length > 0 &&
 						<div className="action-zone form-group">
-							<button type="button" className="btn btn-primary btn-lg btn-block-xxs" tabIndex="2" onClick={this.handleSaveList}>Uložit nákup</button>
-							<button type="button" className="btn btn-link btn-block-xxs" tabIndex="3" onClick={this.handleStartOver}>Začít znova</button>
+							<button type="button" className="btn btn-primary btn-lg btn-block-xxs" tabIndex={2} onClick={this.handleSaveList}>Uložit nákup</button>
+							<button type="button" className="btn btn-link btn-block-xxs" tabIndex={3} onClick={this.handleStartOver}>Začít znova</button>
 						</div>
 					}
 				</form>
@@ -201,23 +218,16 @@ class Form extends React.Component {
 	}
 }
 
-Form.propTypes = {
-	resetList: PropTypes.func,
-	removeItem: PropTypes.func,
-	addItem: PropTypes.func,
-	items: PropTypes.array,
-}
-
 // mapovani hlavniho stavu na props
-function mapStateToProps(state) {
+function mapStateToProps(state: ShoppingListState) {
 	return {
 		items: state.items
 	}
 }
 
 // mapovani
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators(shoppingListActions, dispatch)
+function mapDispatchToProps(dispatch: Dispatch) {
+	return bindActionCreators(ShoppingListActions, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form)

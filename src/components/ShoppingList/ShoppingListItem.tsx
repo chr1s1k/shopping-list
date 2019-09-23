@@ -1,26 +1,39 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { MouseEvent } from 'react'
+import { Item } from '../../interfaces/types'
 
-class ShoppingListItem extends React.Component {
-	constructor(props) {
+interface IProps {
+	item: Item,
+	readOnly?: boolean,
+	editable?: boolean,
+	index: number,
+	handleOnClick?: (index: number) => void,
+	toggleActive?: (index: number) => void
+}
+
+class ShoppingListItem extends React.Component<IProps> {
+	constructor(props: IProps) {
 		super(props)
 
 		this.handleOnClick = this.handleOnClick.bind(this)
 		this.changeItemState = this.changeItemState.bind(this)
 	}
 
-	handleOnClick(event) {
+	handleOnClick(event: MouseEvent) {
 		event.preventDefault()
 		const { index } = this.props
 
-		this.props.handleOnClick(index)
+		if (this.props.handleOnClick) {
+			this.props.handleOnClick(index)
+		}
 	}
 
-	changeItemState(event) {
+	changeItemState(event: MouseEvent) {
 		event.preventDefault()
 		const { index } = this.props
 
-		this.props.toggleActive(index)
+		if (this.props.toggleActive) {
+			this.props.toggleActive(index)
+		}
 	}
 
 	render() {
@@ -63,15 +76,6 @@ class ShoppingListItem extends React.Component {
 			return <div className="list-group-item">{item.value}</div>
 		}
 	}
-}
-
-ShoppingListItem.propTypes = {
-	item: PropTypes.object,
-	handleOnClick: PropTypes.func,
-	index: PropTypes.number,
-	readOnly: PropTypes.bool,
-	editable: PropTypes.bool,
-	toggleActive: PropTypes.func,
 }
 
 export default ShoppingListItem

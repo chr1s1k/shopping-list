@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { MouseEvent } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import PropTypes from 'prop-types'
+import { Item } from '../../interfaces/types'
 
-class DoneForm extends React.Component {
-	constructor() {
-		super()
+interface IProps {
+	items: Array<Item>
+}
+
+interface IState {
+	redirect: boolean
+}
+
+class DoneForm extends React.Component<IProps, IState> {
+	constructor(props: IProps) {
+		super(props)
 
 		this.state = {
 			redirect: false
@@ -13,13 +21,13 @@ class DoneForm extends React.Component {
 		this.handleOnClick = this.handleOnClick.bind(this)
 	}
 
-	handleOnClick(event) {
+	handleOnClick(event: MouseEvent) {
 		event.preventDefault()
 		const items = this.props.items
 		let allItemsChecked = true
 
 		// zkontroluj, zda vsechny polozky uz byly odskrtnute
-		for (var i = 0; i < items.length; i += 1) {
+		for (let i = 0; i < items.length; i += 1) {
 			allItemsChecked = !items[i].active
 			if (!allItemsChecked) {
 				break
@@ -28,9 +36,8 @@ class DoneForm extends React.Component {
 
 		// pokud ne, tak zobraz potvrzeni
 		if (!allItemsChecked) {
-			var proceed = window.confirm(
-				'Některé položky ještě nebyly označeny, opravdu už máš všechno?'
-			)
+			const proceed = window.confirm('Některé položky ještě nebyly označeny, opravdu už máš všechno?')
+
 			if (proceed) {
 				this.setState({
 					redirect: true
@@ -63,10 +70,6 @@ class DoneForm extends React.Component {
 			</div>
 		)
 	}
-}
-
-DoneForm.propTypes = {
-	items: PropTypes.array,
 }
 
 export default DoneForm

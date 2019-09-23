@@ -1,20 +1,25 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { MouseEvent } from 'react'
 import Message from '../Messages/Message'
 
-class ErrorForm extends React.Component {
-	constructor() {
-		super()
+interface IProps {
+	handleSaveList: () => void,
+	handleStartOver: (event: MouseEvent) => void
+}
+
+class ErrorForm extends React.Component<IProps> {
+	constructor(props: IProps) {
+		super(props)
 
 		this.handleOnClick = this.handleOnClick.bind(this)
 		this.handleStartOver = this.handleStartOver.bind(this)
 	}
 
-	handleOnClick(event) {
-		this.props.handleSaveList(event)
+	handleOnClick(event: MouseEvent) {
+		event.preventDefault()
+		this.props.handleSaveList()
 	}
 
-	handleStartOver(event) {
+	handleStartOver(event: MouseEvent) {
 		this.props.handleStartOver(event)
 	}
 
@@ -27,14 +32,14 @@ class ErrorForm extends React.Component {
 						type="button"
 						className="btn btn-primary btn-lg btn-block-xxs"
 						onClick={this.handleOnClick}
-						tabIndex="1"
+						tabIndex={1}
 					>
 						Znovu uložit
 					</button>
 					<a
 						href="/"
 						className="btn btn-link btn-block-xxs"
-						tabIndex="2"
+						tabIndex={2}
 						role="button"
 						onClick={this.handleStartOver}
 					>
@@ -44,11 +49,6 @@ class ErrorForm extends React.Component {
 			</div>
 		)
 	}
-}
-
-ErrorForm.propTypes = {
-	handleSaveList: PropTypes.func,
-	handleStartOver: PropTypes.func,
 }
 
 export default ErrorForm

@@ -1,12 +1,20 @@
 import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, Dispatch } from 'redux'
 
-import * as shoppingListActions from '../actions/ShoppingListActions'
+import * as ShoppingListActions from '../actions/ShoppingListActions'
+import { ShoppingListState } from '../interfaces/types'
+import ShoppingListItem from '../components/ShoppingList/ShoppingListItem'
 
-function ShoppingListCompletedView({ resetList, items }) {
+type Props = {
+	items: Array<ShoppingListItem>
+	resetList: () => void,
+}
+
+function ShoppingListCompletedView(props: Props) {
+	const { items, resetList } = props
+
 	useEffect(() => {
 		resetList()
 	}, [items.length, resetList]) // only re-run the effect if items.length or resetList changes
@@ -29,19 +37,14 @@ function ShoppingListCompletedView({ resetList, items }) {
 	)
 }
 
-ShoppingListCompletedView.propTypes = {
-	resetList: PropTypes.func,
-	items: PropTypes.array,
-}
-
-function mapStateToProps(state) {
+function mapStateToProps(state: ShoppingListState) {
 	return {
 		items: state.items
 	}
 }
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators(shoppingListActions, dispatch)
+function mapDispatchToProps(dispatch: Dispatch) {
+	return bindActionCreators(ShoppingListActions, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShoppingListCompletedView)
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppingListCompletedView as any)
