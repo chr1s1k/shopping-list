@@ -74,6 +74,7 @@ class ShoppingListReceivedView extends React.Component<IProps> {
 				<div>
 					<ShoppingList
 						items={items}
+						listReadOnly={true}
 						listEditable={true}
 						toggleActive={this.props.toggleActive}
 					/>

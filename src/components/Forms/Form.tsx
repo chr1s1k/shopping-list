@@ -168,7 +168,7 @@ class Form extends React.Component<IProps, IState> {
 						<label htmlFor="item" className="sr-only">Zadej, co chceš nakoupit</label>
 						<input type="text" name="item" id="item" value={formValue} className="form-control input-lg input-main" placeholder="Co chceš nakoupit?" tabIndex={2} autoFocus onChange={this.handleChange} ref={(input) => { this.mainInput = input }} />
 						{formValue !== '' &&
-							<button type="submit" className="btn btn-link btn-lg btn-add-item visible-xs" aria-label="Potvrdit">
+							<button type="submit" className="btn btn-link btn-lg btn-add-item visible-xs" aria-label="Potvrdit" tabIndex={3}>
 								<i className="glyphicon glyphicon-plus" aria-hidden="true"></i>
 							</button>
 						}
@@ -181,8 +181,8 @@ class Form extends React.Component<IProps, IState> {
 
 					{items.length > 0 &&
 						<div className="action-zone form-group">
-							<button type="button" className="btn btn-primary btn-lg btn-block-xxs" tabIndex={2} onClick={this.handleSaveList}>Uložit nákup</button>
-							<button type="button" className="btn btn-link btn-block-xxs" tabIndex={3} onClick={this.handleStartOver}>Začít znova</button>
+							<button type="button" className="btn btn-primary btn-lg btn-block-xxs" tabIndex={3} onClick={this.handleSaveList}>Uložit nákup</button>
+							<button type="button" className="btn btn-link btn-block-xxs" tabIndex={4} onClick={this.handleStartOver}>Začít znova</button>
 						</div>
 					}
 				</form>

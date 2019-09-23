@@ -5,7 +5,7 @@ import { Item } from '../../interfaces/types'
 
 interface IProps {
 	items: Array<Item>,
-	listReadOnly?: boolean,
+	listReadOnly: boolean,
 	listEditable?: boolean,
 	handleRemoveItem?: (index: number) => void,
 	toggleActive?: (index: number) => void

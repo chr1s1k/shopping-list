@@ -1,3 +1,5 @@
+import 'core-js/stable'
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
@@ -14,7 +16,7 @@ import ShoppingListReducer from './reducers/ShoppingListReducer'
 import App from './components/App/App'
 
 const persistConfig = {
-	key: 'root',
+	key: 'ShoppingListStorage',
 	whitelist: ['slid', 'items'],
 	storage
 }
