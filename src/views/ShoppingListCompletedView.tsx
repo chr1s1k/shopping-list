@@ -7,7 +7,7 @@ import * as ShoppingListActions from '../actions/ShoppingListActions'
 import { ShoppingListState } from '../interfaces/types'
 import ShoppingListItem from '../components/ShoppingList/ShoppingListItem'
 
-type Props = {
+interface Props {
 	items: Array<ShoppingListItem>
 	resetList: () => void,
 }
