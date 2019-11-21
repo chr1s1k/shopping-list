@@ -1,15 +1,20 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Nákupní seznam",
+  "name": "Nákupní seznam",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "/images/android-192x192.png",
       "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/android-512x512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ],
-  "start_url": "./index.html",
+  "start_url": "./",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#333333",
+  "background_color": "#ffa800"
 }
