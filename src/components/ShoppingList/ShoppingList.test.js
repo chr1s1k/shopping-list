@@ -9,13 +9,13 @@ describe('Shopping list test', () => {
 	it('should render some items', () => {
 		const items = [
 			{
-				value: 'apple',
+				value: 'apple'
 			},
 			{
-				value: 'carrot',
+				value: 'carrot'
 			},
 			{
-				value: 'onion',
+				value: 'onion'
 			}
 		]
 		const component = shallow(<ShoppingList items={items} />)

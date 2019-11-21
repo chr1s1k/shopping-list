@@ -21,7 +21,7 @@ class DoneForm extends React.Component<IProps, IState> {
 		this.handleOnClick = this.handleOnClick.bind(this)
 	}
 
-	handleOnClick(event: MouseEvent) {
+	handleOnClick(event: MouseEvent): void {
 		event.preventDefault()
 		const items = this.props.items
 		let allItemsChecked = true
@@ -36,7 +36,9 @@ class DoneForm extends React.Component<IProps, IState> {
 
 		// pokud ne, tak zobraz potvrzeni
 		if (!allItemsChecked) {
-			const proceed = window.confirm('Některé položky ještě nebyly označeny, opravdu už máš všechno?')
+			const proceed = window.confirm(
+				'Některé položky ještě nebyly označeny, opravdu už máš všechno?'
+			)
 
 			if (proceed) {
 				this.setState({
@@ -50,7 +52,7 @@ class DoneForm extends React.Component<IProps, IState> {
 		}
 	}
 
-	render() {
+	render(): JSX.Element {
 		const redirect = this.state.redirect,
 			landingPageUrl = '/diky'
 

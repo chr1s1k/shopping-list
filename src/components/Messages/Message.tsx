@@ -1,13 +1,11 @@
 import React from 'react'
 
 type Props = {
-	type: string,
+	type: string
 	text: string
 }
 
-const Message = (props: Props) => {
-	const { type, text } = props
-
+const Message: React.FC<Props> = ({ type, text }) => {
 	return (
 		<div className={`alert alert-${type}`} role="alert">
 			<p>

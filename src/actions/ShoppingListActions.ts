@@ -64,7 +64,10 @@ export function errored(bool: boolean): ShoppingListActionType {
 	}
 }
 
-export function setList(items: Array<Item>, slid: string): ShoppingListActionType {
+export function setList(
+	items: Array<Item>,
+	slid: string
+): ShoppingListActionType {
 	return {
 		type: SET_LIST,
 		items,

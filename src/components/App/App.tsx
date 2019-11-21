@@ -6,7 +6,7 @@ import PageNotFoundView from '../../views/PageNotFoundView'
 import ShoppingListCompletedView from '../../views/ShoppingListCompletedView'
 import Form from '../Forms/Form'
 
-const App = () => (
+const App: React.FC = () => (
 	<div>
 		<Switch>
 			<Route exact path="/" component={Form} />

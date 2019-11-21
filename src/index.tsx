@@ -1,5 +1,5 @@
-import 'core-js/stable'
-import 'regenerator-runtime/runtime'
+// import 'core-js/stable'
+// import 'regenerator-runtime/runtime'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -24,17 +24,10 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, ShoppingListReducer)
 
-const enhancer = compose(
-	composeWithDevTools(
-		applyMiddleware(thunk)
-	)
-)
+const enhancer = compose(composeWithDevTools(applyMiddleware(thunk)))
 
 // vytvori store s uvodnim stavem a moznosti prohlizet store pomoci devtools
-const store = createStore(
-	persistedReducer,
-	enhancer
-)
+const store = createStore(persistedReducer, enhancer)
 
 const persistor = persistStore(store)
 

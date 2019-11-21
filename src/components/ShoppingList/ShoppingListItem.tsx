@@ -2,11 +2,11 @@ import React, { MouseEvent } from 'react'
 import { Item } from '../../interfaces/types'
 
 interface IProps {
-	item: Item,
-	readOnly?: boolean,
-	editable?: boolean,
-	index: number,
-	handleOnClick?: (index: number) => void,
+	item: Item
+	readOnly?: boolean
+	editable?: boolean
+	index: number
+	handleOnClick?: (index: number) => void
 	toggleActive?: (index: number) => void
 }
 
@@ -18,7 +18,7 @@ class ShoppingListItem extends React.Component<IProps> {
 		this.changeItemState = this.changeItemState.bind(this)
 	}
 
-	handleOnClick(event: MouseEvent) {
+	handleOnClick(event: MouseEvent): void {
 		event.preventDefault()
 		const { index } = this.props
 
@@ -27,7 +27,7 @@ class ShoppingListItem extends React.Component<IProps> {
 		}
 	}
 
-	changeItemState(event: MouseEvent) {
+	changeItemState(event: MouseEvent): void {
 		event.preventDefault()
 		const { index } = this.props
 
@@ -36,7 +36,7 @@ class ShoppingListItem extends React.Component<IProps> {
 		}
 	}
 
-	render() {
+	render(): JSX.Element {
 		const { item, readOnly, editable } = this.props
 
 		if (!readOnly) {

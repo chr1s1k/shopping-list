@@ -2,7 +2,7 @@ import React, { MouseEvent } from 'react'
 import Message from '../Messages/Message'
 
 interface IProps {
-	handleSaveList: () => void,
+	handleSaveList: () => void
 	handleStartOver: (event: MouseEvent) => void
 }
 
@@ -14,19 +14,22 @@ class ErrorForm extends React.Component<IProps> {
 		this.handleStartOver = this.handleStartOver.bind(this)
 	}
 
-	handleOnClick(event: MouseEvent) {
+	handleOnClick(event: MouseEvent): void {
 		event.preventDefault()
 		this.props.handleSaveList()
 	}
 
-	handleStartOver(event: MouseEvent) {
+	handleStartOver(event: MouseEvent): void {
 		this.props.handleStartOver(event)
 	}
 
-	render() {
+	render(): JSX.Element {
 		return (
 			<div>
-				<Message type="danger" text="Jejda! Nákup se nepodařilo uložit, zkus to prosím znova." />
+				<Message
+					type="danger"
+					text="Jejda! Nákup se nepodařilo uložit, zkus to prosím znova."
+				/>
 				<div className="action-zone form-group">
 					<button
 						type="button"

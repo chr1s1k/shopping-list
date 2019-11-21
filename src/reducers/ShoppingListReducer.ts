@@ -12,14 +12,17 @@ import {
 	RESET_LIST
 } from '../interfaces/types'
 
-const initialState: ShoppingListState = {
+const initialState = {
 	slid: null,
 	items: [],
 	isLoading: true,
 	hasErrored: false
 }
 
-const ShoppingListReducer = (state: ShoppingListState = initialState, action: ShoppingListActionType): ShoppingListState => {
+const ShoppingListReducer = (
+	state: ShoppingListState = initialState,
+	action: ShoppingListActionType
+): ShoppingListState => {
 	switch (action.type) {
 		case ADD_ITEM:
 			return Object.assign({}, state, {
@@ -51,7 +54,7 @@ const ShoppingListReducer = (state: ShoppingListState = initialState, action: Sh
 				...state,
 				items: [
 					...state.items.slice(0, action.index), // na konec pole state prida polozky 0 az index
-					{...state.items[index], active: !state.items[index].active},
+					{ ...state.items[index], active: !state.items[index].active },
 					...state.items.slice(action.index + 1) // a nasledne prida vsechno dal od index+1
 				]
 			}
@@ -67,14 +70,10 @@ const ShoppingListReducer = (state: ShoppingListState = initialState, action: Sh
 			}
 
 		case SET_LIST:
-			return Object.assign(
-				{},
-				state,
-				{
-					slid: action.slid,
-					items: action.items
-				}
-			)
+			return Object.assign({}, state, {
+				slid: action.slid,
+				items: action.items
+			})
 
 		case RESET_LIST:
 			return {

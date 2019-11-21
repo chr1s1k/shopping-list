@@ -1,91 +1,90 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators, Dispatch } from 'redux'
+import { Dispatch, bindActionCreators } from 'redux'
 
 import ShoppingList from '../components/ShoppingList/ShoppingList'
 import DoneForm from '../components/Forms/DoneForm'
 import Message from '../components/Messages/Message'
 import { api } from '../config/api'
 
-import * as shoppingListActions from '../actions/ShoppingListActions'
+import * as ShoppingListActions from '../actions/ShoppingListActions'
 import { ShoppingListState, Item } from '../interfaces/types'
 import { RouteComponentProps } from 'react-router'
 
-interface IProps extends RouteComponentProps {
-	items: Array<Item>,
-	slid: string,
-	isLoading: boolean,
-	hasErrored: boolean,
-	setLoading: (loading: boolean) => void,
-	getItems: (url: string) => void,
-	setItems: (items: Array<Item>) => void,
-	errored: (hasError: boolean) => void,
-	toggleActive: () => void
+interface DispatchProps {
+	setLoading: (loading: boolean) => void
+	getItems: (url: string) => void
+	setItems: (items: Array<Item>) => void
+	errored: (hasError: boolean) => void
+	toggleActive: (index: number) => void
 }
 
-class ShoppingListReceivedView extends React.Component<IProps> {
-	componentDidMount() {
-		const requestedSlid = (this.props.match.params as any).slid
+interface ComponentProps
+	extends RouteComponentProps,
+		ShoppingListState,
+		DispatchProps {}
+
+const ShoppingListReceivedView: React.FC<ComponentProps> = (
+	props: ComponentProps
+) => {
+	const { items, isLoading, hasErrored } = props
+
+	useEffect(() => {
+		const requestedSlid = (props.match.params as ShoppingListState).slid
 
 		if (requestedSlid) {
-			const { items, slid } = this.props
+			const { slid } = props
 
 			// pokud je parametr slid dostupný z localstorage a odpovídá tomu, který přišel v URL a máme dostupné nějaké položky, tak se není potřeba dotazovat API a načti položky z localstorage
 			if (slid !== undefined && slid === requestedSlid && items.length) {
-				this.props.setLoading(false)
+				props.setLoading(false)
 			} else {
-				this.props.getItems(api.getUrl + requestedSlid)
+				props.getItems(api.getUrl + requestedSlid)
 			}
 		} else {
-			this.props.setItems([]) // pokud chybi SLID, nastav prazdne pole items
-			this.props.errored(true)
+			props.setItems([]) // pokud chybi SLID, nastav prazdne pole items
+			props.errored(true)
 		}
+	}, [])
+
+	if (hasErrored) {
+		return (
+			<Message
+				type="danger"
+				text="Nákupní seznam se nepodařilo načíst nebo neexistuje."
+			/>
+		)
 	}
 
-	render() {
-		const { items, isLoading, hasErrored } = this.props
-
-		if (hasErrored) {
-			return (
-				<Message
-					type='danger'
-					text='Nákupní seznam se nepodařilo načíst nebo neexistuje.'
+	if (isLoading) {
+		return (
+			<div className="loader">
+				<span className="sr-only">Načítám...</span>
+			</div>
+		)
+	} else if (!items.length) {
+		return (
+			<Message
+				type="danger"
+				text="Nákupní seznam se nepodařilo načíst nebo neexistuje."
+			/>
+		)
+	} else {
+		return (
+			<div>
+				<ShoppingList
+					items={items}
+					listReadOnly={true}
+					listEditable={true}
+					toggleActive={props.toggleActive}
 				/>
-			)
-		}
-
-		if (isLoading) {
-			return (
-				<div className='loader'>
-					<span className='sr-only'>Načítám...</span>
-				</div>
-			)
-		} else {
-			if (!items.length) {
-				return (
-					<Message
-						type='danger'
-						text='Nákupní seznam se nepodařilo načíst nebo neexistuje.'
-					/>
-				)
-			}
-
-			return (
-				<div>
-					<ShoppingList
-						items={items}
-						listReadOnly={true}
-						listEditable={true}
-						toggleActive={this.props.toggleActive}
-					/>
-					<DoneForm items={items} />
-				</div>
-			)
-		}
+				<DoneForm items={items} />
+			</div>
+		)
 	}
 }
 
-function mapStateToProps(state: ShoppingListState) {
+function mapStateToProps(state: ShoppingListState): ShoppingListState {
 	return {
 		slid: state.slid,
 		items: state.items,
@@ -94,8 +93,11 @@ function mapStateToProps(state: ShoppingListState) {
 	}
 }
 
-function mapDispatchToProps(dispatch: Dispatch) {
-	return bindActionCreators(shoppingListActions, dispatch)
+function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+	return bindActionCreators(ShoppingListActions, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShoppingListReceivedView as any)
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ShoppingListReceivedView)

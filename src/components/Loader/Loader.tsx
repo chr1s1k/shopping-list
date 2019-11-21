@@ -4,9 +4,7 @@ type Props = {
 	showLoader: boolean
 }
 
-const Loader = (props: Props) => {
-	const { showLoader } = props
-
+const Loader: React.FC<Props> = ({ showLoader }) => {
 	if (!showLoader) {
 		return null
 	}
