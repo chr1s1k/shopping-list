@@ -1,7 +1,13 @@
 import React from 'react'
 
 type Props = {
+	/**
+	 * Define type of the message.
+	 */
 	type: string
+	/**
+	 * String that will be rendered within the message.
+	 */
 	text: string
 }
 

@@ -1,80 +1,91 @@
 import React, { MouseEvent } from 'react'
 import { Item } from '../../interfaces/types'
 
-interface IProps {
+interface Props {
+	/**
+	 * Shopping list item.
+	 */
 	item: Item
+	/**
+	 * Define whether the item can be removed/changed or is just read only.
+	 */
 	readOnly?: boolean
+	/**
+	 * Define whether the state of the item can be changed or not.
+	 */
 	editable?: boolean
+	/**
+	 * A number which identifies the item.
+	 */
 	index: number
+	/**
+	 * Function that will be run when item is about to be removed from the list.
+	 * @param index - a number which identifies a particular item.
+	 */
 	handleOnClick?: (index: number) => void
+	/**
+	 * Function that will be run when the state of an item is about to be changed.
+	 * @param index - a number which identifies a particular item.
+	 */
 	toggleActive?: (index: number) => void
 }
 
-class ShoppingListItem extends React.Component<IProps> {
-	constructor(props: IProps) {
-		super(props)
-
-		this.handleOnClick = this.handleOnClick.bind(this)
-		this.changeItemState = this.changeItemState.bind(this)
-	}
-
-	handleOnClick(event: MouseEvent): void {
+const ShoppingListItem: React.FC<Props> = ({
+	item,
+	index,
+	readOnly,
+	editable,
+	handleOnClick,
+	toggleActive
+}) => {
+	const removeItem = (event: MouseEvent): void => {
 		event.preventDefault()
-		const { index } = this.props
 
-		if (this.props.handleOnClick) {
-			this.props.handleOnClick(index)
+		if (handleOnClick) {
+			handleOnClick(index)
 		}
 	}
 
-	changeItemState(event: MouseEvent): void {
+	const changeItemState = (event: MouseEvent): void => {
 		event.preventDefault()
-		const { index } = this.props
 
-		if (this.props.toggleActive) {
-			this.props.toggleActive(index)
+		if (toggleActive) {
+			toggleActive(index)
 		}
 	}
 
-	render(): JSX.Element {
-		const { item, readOnly, editable } = this.props
-
-		if (!readOnly) {
-			return (
-				<a
-					href="/"
-					className="list-group-item"
-					title="Odstranit položku"
-					onClick={this.handleOnClick}
-					role="button"
-				>
-					{item.value}{' '}
-					<i
-						className="glyphicon glyphicon-remove icon-remove"
-						aria-hidden="true"
-					></i>
-				</a>
-			)
-		} else if (editable) {
-			return (
-				<a
-					href="/"
-					className={
-						'list-group-item item-' + (item.active ? 'active' : 'inactive')
-					}
-					onClick={this.changeItemState}
-					role="button"
-				>
-					<span>{item.value}</span>
-					<i
-						className="glyphicon glyphicon-ok icon-done"
-						aria-hidden="true"
-					></i>
-				</a>
-			)
-		} else {
-			return <div className="list-group-item">{item.value}</div>
-		}
+	if (!readOnly) {
+		return (
+			<a
+				href="/"
+				className="list-group-item"
+				title="Odstranit položku"
+				onClick={removeItem}
+				role="button"
+			>
+				{item.value}{' '}
+				<i
+					className="glyphicon glyphicon-remove icon-remove"
+					aria-hidden="true"
+				></i>
+			</a>
+		)
+	} else if (editable) {
+		return (
+			<a
+				href="/"
+				className={
+					'list-group-item item-' + (item.active ? 'active' : 'inactive')
+				}
+				onClick={changeItemState}
+				role="button"
+			>
+				<span>{item.value}</span>
+				<i className="glyphicon glyphicon-ok icon-done" aria-hidden="true"></i>
+			</a>
+		)
+	} else {
+		return <div className="list-group-item">{item.value}</div>
 	}
 }
 

@@ -1,6 +1,3 @@
-// import 'core-js/stable'
-// import 'regenerator-runtime/runtime'
-
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
@@ -26,12 +23,10 @@ const persistedReducer = persistReducer(persistConfig, ShoppingListReducer)
 
 const enhancer = compose(composeWithDevTools(applyMiddleware(thunk)))
 
-// vytvori store s uvodnim stavem a moznosti prohlizet store pomoci devtools
 const store = createStore(persistedReducer, enhancer)
 
 const persistor = persistStore(store)
 
-// Provider zpristupni store App komponente
 ReactDOM.render(
 	<Provider store={store}>
 		<PersistGate loading={null} persistor={persistor}>

@@ -26,7 +26,7 @@ const ShoppingListReducer = (
 	switch (action.type) {
 		case ADD_ITEM:
 			return Object.assign({}, state, {
-				items: [action.item, ...state.items] // novou položku přidej na začátek pole
+				items: [action.item, ...state.items]
 			})
 
 		case REMOVE_ITEM:
@@ -61,7 +61,7 @@ const ShoppingListReducer = (
 		}
 
 		case IS_LOADING:
-			return { ...state, isLoading: action.isLoading } // vrati kopii objektu state a modifikuje atribut isLoading
+			return { ...state, isLoading: action.isLoading }
 
 		case HAS_ERRORED:
 			return {

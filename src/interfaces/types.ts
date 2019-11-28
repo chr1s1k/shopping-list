@@ -9,14 +9,32 @@ export const SET_LIST = 'SET_LIST'
 export const RESET_LIST = 'RESET_LIST'
 
 export interface Item {
+	/**
+	 * Value of the item itself.
+	 */
 	value: string
+	/**
+	 * Define whether the item is still active it means is not marked as "checked".
+	 */
 	active: boolean
 }
 
 export interface ShoppingListState {
+	/**
+	 * Unique ID of the particular shopping list.
+	 */
 	slid: string | null
+	/**
+	 * List of shopping list items.
+	 */
 	items: Array<Item>
+	/**
+	 * Define whether there is a running ajax request.
+	 */
 	isLoading: boolean
+	/**
+	 * True if an error has occurred during creating/fetching shopping list.
+	 */
 	hasErrored: boolean
 }
 

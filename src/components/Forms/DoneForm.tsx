@@ -1,29 +1,20 @@
-import React, { MouseEvent } from 'react'
+import React, { MouseEvent, useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Item } from '../../interfaces/types'
 
-interface IProps {
+interface Props {
+	/**
+	 * Array of shopping list items.
+	 */
 	items: Array<Item>
 }
 
-interface IState {
-	redirect: boolean
-}
+const DoneForm: React.FC<Props> = ({ items }) => {
+	const [redirect, setRedirect] = useState(false)
+	const landingPageUrl = '/diky'
 
-class DoneForm extends React.Component<IProps, IState> {
-	constructor(props: IProps) {
-		super(props)
-
-		this.state = {
-			redirect: false
-		}
-
-		this.handleOnClick = this.handleOnClick.bind(this)
-	}
-
-	handleOnClick(event: MouseEvent): void {
+	const handleOnClick = (event: MouseEvent): void => {
 		event.preventDefault()
-		const items = this.props.items
 		let allItemsChecked = true
 
 		// zkontroluj, zda vsechny polozky uz byly odskrtnute
@@ -41,37 +32,28 @@ class DoneForm extends React.Component<IProps, IState> {
 			)
 
 			if (proceed) {
-				this.setState({
-					redirect: true
-				})
+				setRedirect(true)
 			}
 		} else {
-			this.setState({
-				redirect: true
-			})
+			setRedirect(true)
 		}
 	}
 
-	render(): JSX.Element {
-		const redirect = this.state.redirect,
-			landingPageUrl = '/diky'
-
-		if (redirect) {
-			return <Redirect to={landingPageUrl} push={true} />
-		}
-
-		return (
-			<div className="action-zone form-group">
-				<Link
-					to={landingPageUrl}
-					className="btn btn-primary btn-lg btn-block-xxs"
-					onClick={this.handleOnClick}
-				>
-					Mám nakoupeno
-				</Link>
-			</div>
-		)
+	if (redirect) {
+		return <Redirect to={landingPageUrl} push={true} />
 	}
+
+	return (
+		<div className="action-zone form-group">
+			<Link
+				to={landingPageUrl}
+				className="btn btn-primary btn-lg btn-block-xxs"
+				onClick={handleOnClick}
+			>
+				Mám nakoupeno
+			</Link>
+		</div>
+	)
 }
 
 export default DoneForm
