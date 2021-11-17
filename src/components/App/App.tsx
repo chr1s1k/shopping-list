@@ -7,15 +7,15 @@ import ShoppingListCompletedView from '../../views/ShoppingListCompletedView'
 import Form from '../Forms/Form'
 
 const App: React.FC = () => (
-	<div>
-		<Switch>
-			<Route exact path="/" component={Form} />
-			<Route exact path="/nakup/:slid" component={ShoppingListReceivedView} />
-			<Route path="/nakup" component={ShoppingListReceivedView} />
-			<Route path="/diky" component={ShoppingListCompletedView} />
-			<Route component={PageNotFoundView} />
-		</Switch>
-	</div>
+  <div>
+    <Switch>
+      <Route exact path="/" component={Form} />
+      <Route exact path="/nakup/:slid" component={ShoppingListReceivedView} />
+      <Route path="/nakup" component={ShoppingListReceivedView} />
+      <Route path="/diky" component={ShoppingListCompletedView} />
+      <Route component={PageNotFoundView} />
+    </Switch>
+  </div>
 )
 
 export default App

@@ -7,54 +7,50 @@ import * as ShoppingListActions from '../actions/ShoppingListActions'
 import { ShoppingListState, Item } from '../interfaces/types'
 
 interface DispatchProps {
-	resetList: () => void
+  resetList: () => void
 }
 
 interface ComponentProps extends DispatchProps {
-	items: Array<Item>
+  items: Array<Item>
 }
 
 // props from redux state
 interface StateProps {
-	items: Array<Item>
+  items: Array<Item>
 }
 
 function ShoppingListCompletedView(props: ComponentProps): JSX.Element {
-	const { items, resetList } = props
+  const { items, resetList } = props
 
-	useEffect(() => {
-		resetList()
-	}, [items.length, resetList])
+  useEffect(() => {
+    resetList()
+  }, [items.length, resetList])
 
-	return (
-		<div>
-			<div className="alert alert-success" role="alert">
-				<p>
-					Díky, že používáš tuhle aplikaci!{' '}
-					<i className="glyphicon glyphicon-heart"></i>
-				</p>
-				<p>Jestli nevíš co dál, můžeš si napsat vlastní nákup ;)</p>
-			</div>
-			<div className="action-zone form-group">
-				<Link to="/" className="btn btn-primary btn-lg btn-block-xxs">
-					Napsat vlastní nákup
-				</Link>
-			</div>
-		</div>
-	)
+  return (
+    <div>
+      <div className="alert alert-success" role="alert">
+        <p>
+          Díky, že používáš tuhle aplikaci! <i className="glyphicon glyphicon-heart"></i>
+        </p>
+        <p>Jestli nevíš co dál, můžeš si napsat vlastní nákup ;)</p>
+      </div>
+      <div className="action-zone form-group">
+        <Link to="/" className="btn btn-primary btn-lg btn-block-xxs">
+          Napsat vlastní nákup
+        </Link>
+      </div>
+    </div>
+  )
 }
 
 function mapStateToProps(state: ShoppingListState): StateProps {
-	return {
-		items: state.items
-	}
+  return {
+    items: state.items,
+  }
 }
 
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
-	return bindActionCreators(ShoppingListActions, dispatch)
+  return bindActionCreators(ShoppingListActions, dispatch)
 }
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ShoppingListCompletedView)
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppingListCompletedView)

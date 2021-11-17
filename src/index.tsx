@@ -14,9 +14,9 @@ import ShoppingListReducer from './reducers/ShoppingListReducer'
 import App from './components/App/App'
 
 const persistConfig = {
-	key: 'ShoppingListStorage',
-	whitelist: ['slid', 'items'],
-	storage
+  key: 'ShoppingListStorage',
+  whitelist: ['slid', 'items'],
+  storage,
 }
 
 const persistedReducer = persistReducer(persistConfig, ShoppingListReducer)
@@ -28,12 +28,12 @@ const store = createStore(persistedReducer, enhancer)
 const persistor = persistStore(store)
 
 ReactDOM.render(
-	<Provider store={store}>
-		<PersistGate loading={null} persistor={persistor}>
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>
-		</PersistGate>
-	</Provider>,
-	document.getElementById('app-root')
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </PersistGate>
+  </Provider>,
+  document.getElementById('app-root'),
 )
