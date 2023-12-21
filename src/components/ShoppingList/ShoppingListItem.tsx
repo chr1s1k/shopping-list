@@ -1,5 +1,7 @@
 import React, { MouseEvent } from 'react'
 import { Item } from '../../interfaces/types'
+import style from './ShoppingListItem.module.scss'
+import classNames from 'classnames'
 
 interface Props {
   /**
@@ -56,11 +58,11 @@ const ShoppingListItem: React.FC<Props> = ({
 
   if (!readOnly) {
     return (
-      <li>
+      <li className={style.item}>
         <button
           type="button"
-          className="list-group-item"
-          title="Odstranit položku"
+          className={classNames('list-group-item', style.listGroupItem)}
+          aria-label={`Odstranit položku ${item.value}`}
           onClick={removeItem}
         >
           {item.value} <i className="glyphicon glyphicon-remove icon-remove" aria-hidden="true"></i>
@@ -69,7 +71,7 @@ const ShoppingListItem: React.FC<Props> = ({
     )
   } else if (editable) {
     return (
-      <li>
+      <li className={style.item}>
         <button
           type="button"
           className={'list-group-item item-' + (item.active ? 'active' : 'inactive')}
