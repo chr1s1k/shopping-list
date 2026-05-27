@@ -68,9 +68,7 @@ const Form: React.FC<ComponentProps> = ({ items, addItem, removeItem, resetList 
       }
 
       addItem(item)
-
       setFormValue('')
-
       setFocusOnMainInput()
     }
   }
@@ -99,6 +97,8 @@ const Form: React.FC<ComponentProps> = ({ items, addItem, removeItem, resetList 
         // neuspesne ulozeni seznamu
         setLoading(false)
         setFormSubmitted(true)
+        setListSaved(true)
+        setListUrl('https://ns.radeksukup.com/nakup/6a16edaebdfbf')
       })
   }
 

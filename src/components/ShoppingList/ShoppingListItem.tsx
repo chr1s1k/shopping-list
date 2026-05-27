@@ -74,7 +74,10 @@ const ShoppingListItem: React.FC<Props> = ({
       <li className={style.item}>
         <button
           type="button"
-          className={'list-group-item item-' + (item.active ? 'active' : 'inactive')}
+          className={classNames('list-group-item', style.listGroupItem, {
+            'item-active': item.active,
+            'item-inactive': !item.active,
+          })}
           onClick={changeItemState}
         >
           <span>{item.value}</span>

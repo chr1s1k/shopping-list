@@ -1,5 +1,8 @@
 import React, { MouseEvent } from 'react'
-
+import style from './CopyForm.module.scss'
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
+import { getPathname } from '../../utils/url'
 interface Props {
   /**
    * URL of the shopping list.
@@ -19,11 +22,20 @@ const CopyForm: React.FC<Props> = ({ listUrl, handleCreateNewList, handleModifyL
   <div>
     <div className="alert alert-success" role="alert">
       <p>
-        <i className="glyphicon glyphicon-ok"></i> Výborně! Nyní už stačí jen zkopírovat adresu
-        nákupu a někomu poslat!
+        <i className="glyphicon glyphicon-ok"></i> Výborně! Nyní už můžeš začít nakupovat nebo
+        zkopírovat adresu nákupu a někomu poslat!
       </p>
     </div>
-    <div className="action-zone form-group">
+    <div className={classNames(style.spacer)}>
+      <Link
+        to={getPathname(listUrl)}
+        className="btn btn-primary btn-lg btn-block-xxs"
+        target="_self"
+      >
+        Začít nakupovat
+      </Link>
+    </div>
+    <div className="form-group">
       <div className="input-group">
         <input
           type="text"

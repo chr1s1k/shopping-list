@@ -52,6 +52,9 @@ const DoneForm: React.FC<Props> = ({ items }) => {
       >
         Mám nakoupeno
       </Link>
+      <Link to="/" className="btn btn-link btn-block-xxs">
+        Upravit nákup
+      </Link>
     </div>
   )
 }
